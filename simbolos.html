@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Símbolos y Atributos Nacionales de Cuba</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuración de Tailwind para un color primario cubano (azul) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cuban-blue': '#1565C0', // Azul fuerte para la bandera
+                        'cuban-red': '#E53935',  // Rojo fuerte para el triángulo
+                        'neutral-light': '#F8F9FA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos base para el cuerpo */
+        body {
+            background-color: #f0f4f8; /* Fondo muy claro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        /* Clase para el icono de acordeón */
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-header[aria-expanded="true"] .accordion-icon {
+            transform: rotate(180deg);
+        }
+        /* Estilo para el contenedor de la imagen para asegurar el centrado */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto; /* Ajuste automático de altura */
+            max-height: 250px; /* Limitar la altura máxima de las imágenes */
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div id="app-container" class="w-full max-w-4xl bg-white shadow-2xl rounded-xl overflow-hidden transform transition duration-500 ease-in-out hover:shadow-3xl">
+        
+        <!-- Encabezado -->
+        <header class="p-6 bg-cuban-blue text-white text-center rounded-t-xl">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">
+                🇨🇺 Símbolos y Atributos de Cuba
+            </h1>
+            <p class="mt-2 text-lg font-light opacity-90">Explora la identidad y herencia nacional cubana</p>
+        </header>
+
+        <!-- Contenedor del Acordeón -->
+        <div id="symbols-accordion" class="p-6 space-y-4">
+            <!-- El contenido interactivo se generará aquí mediante JavaScript -->
+        </div>
+        
+    </div>
+
+    <script>
+        // Definición de los símbolos nacionales, sus atributos y ahora las URLs de las imágenes
+        const symbolsData = [
+            {
+                name: "La Bandera Nacional",
+                description: "Símbolo de la unidad, la libertad y la soberanía. Creada en 1849. Sus colores representan ideales y sacrificios.",
+                details: [
+                    "Tres franjas azules: Representan los tres departamentos militares de la isla.",
+                    "Dos franjas blancas: Simbolizan la pureza de los ideales y la virtud.",
+                    "Triángulo rojo: Evoca la sangre derramada y el valor, y el color es el de la masonería (libertad, igualdad, fraternidad).",
+                    "Estrella blanca: 'La Estrella Solitaria', emblema de la absoluta libertad e independencia."
+                ],
+                color: 'cuban-red',
+                image: {
+                    url: "https://placehold.co/400x200/E53935/ffffff?text=Bandera+Nacional",
+                    alt: "Bandera Nacional de Cuba"
+                }
+            },
+            {
+                name: "El Escudo de la Palma Real",
+                description: "El emblema de la nación, adoptado en 1906. Contiene elementos que representan la posición geográfica y la riqueza natural de Cuba.",
+                details: [
+                    "Llave de oro: Entre dos promontorios, representa a Cuba como la 'Llave del Golfo de México'.",
+                    "Cuartel superior con franjas: Las cinco franjas del pabellón nacional (referencia a la bandera).",
+                    "Cuartel inferior con Palma Real: La palmera es el árbol nacional, símbolo de la nobleza y la fortaleza.",
+                    "Gorro Frigio Rojo: En la parte superior, con una estrella blanca, es el símbolo universal de la libertad."
+                ],
+                color: 'cuban-blue',
+                image: {
+                    url: "https://placehold.co/200x250/1565C0/ffffff?text=Escudo+de+Cuba",
+                    alt: "Escudo de la Palma Real de Cuba"
+                }
+            },
+            {
+                name: "El Himno de Bayamo",
+                description: "La Bayamesa, compuesto por Pedro Figueredo (Perucho) en 1868. Es un llamado a la lucha y al honor patrio, entonado por primera vez durante la toma de Bayamo.",
+                details: [
+                    "Título original: La Bayamesa.",
+                    "Letra: Canto de combate y heroísmo que se ha mantenido vigente hasta hoy.",
+                    "Mensaje: Inspiración para defender la patria y morir gloriosamente por ella."
+                ],
+                color: 'cuban-red',
+                image: {
+                    url: "https://placehold.co/400x100/E53935/ffffff?text=Himno+de+Bayamo",
+                    alt: "Partitura y Letra del Himno de Bayamo"
+                }
+            },
+            {
+                name: "La Mariposa (Flor Nacional)",
+                description: "El jazmín de mariposa (Hedychium coronarium) es la flor nacional de Cuba. Símbolo de la pureza, la rebeldía y la independencia.",
+                details: [
+                    "Color: Blanca, lo que simboliza la paz.",
+                    "Uso histórico: Las mujeres cubanas la usaban para llevar mensajes ocultos a los mambises (soldados independentistas) durante la guerra.",
+                    "Fragancia: Posee un aroma intenso y exquisito."
+                ],
+                color: 'cuban-blue',
+                image: {
+                    url: "https://placehold.co/200x200/1565C0/ffffff?text=Flor+Nacional",
+                    alt: "Flor de Mariposa (Jazmín)"
+                }
+            },
+            {
+                name: "La Palma Real (Árbol Nacional)",
+                description: "La Roystonea regia, dominante en el paisaje cubano. Simboliza la nobleza, la realeza y la perenne juventud de la nación.",
+                details: [
+                    "Presencia: Se encuentra en casi todo el territorio cubano.",
+                    "Simbolismo: Por su altura y belleza, representa la fortaleza y la vida.",
+                    "Aparición: Es el único símbolo nacional que se incluye en el Escudo de la República."
+                ],
+                color: 'cuban-red',
+                image: {
+                    url: "https://placehold.co/200x300/E53935/ffffff?text=Palma+Real",
+                    alt: "Palma Real Cubana"
+                }
+            },
+            {
+                name: "El Tocororo (Ave Nacional)",
+                description: "El Trogón Cubano (Priotelus temnurus) es el ave nacional. Su simbolismo se debe a sus colores y su comportamiento en cautiverio.",
+                details: [
+                    "Colores: Rojo, blanco y azul (igual que la bandera nacional).",
+                    "Comportamiento: Es un ave endémica que no puede vivir en cautiverio, lo que la convierte en un símbolo del amor a la libertad y la independencia.",
+                    "Endémico: Solo existe en la isla de Cuba, reforzando la identidad nacional."
+                ],
+                color: 'cuban-blue',
+                image: {
+                    url: "https://placehold.co/200x200/1565C0/ffffff?text=Tocororo",
+                    alt: "Tocororo (Ave Nacional de Cuba)"
+                }
+            }
+        ];
+
+        // Referencia al contenedor del acordeón
+        const accordionContainer = document.getElementById('symbols-accordion');
+
+        /**
+         * Inicializa la interfaz de acordeón para los símbolos.
+         */
+        function initializeAccordion() {
+            symbolsData.forEach((symbol, index) => {
+                const isFirst = index === 0;
+                const itemId = `symbol-${index}`;
+
+                // Construcción de los detalles como una lista
+                const detailsList = symbol.details.map(detail =>
+                    `<li class="mb-1 text-gray-700 leading-relaxed pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-${symbol.color}-600">${detail}</li>`
+                ).join('');
+
+                // Bloque HTML de la imagen
+                const imageBlock = `
+                    <div class="mb-4 image-container">
+                        <img src="${symbol.image.url}" 
+                             alt="${symbol.image.alt}" 
+                             class="rounded-lg shadow-lg max-w-full max-h-full object-contain border-4 border-${symbol.color}-100"
+                             onerror="this.onerror=null; this.src='https://placehold.co/300x150/9CA3AF/ffffff?text=Imagen+No+Disponible'; this.style.border='2px dashed #9CA3AF';"
+                        />
+                    </div>
+                `;
+
+                // Creación del elemento del acordeón
+                const accordionItem = `
+                    <div class="border border-gray-200 rounded-lg overflow-hidden shadow-md">
+                        
+                        <!-- Cabecera del Acordeón (Botón) -->
+                        <button 
+                            id="header-${itemId}"
+                            class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-lg bg-${symbol.color}-50 hover:bg-${symbol.color}-100 transition-all duration-300 focus:outline-none"
+                            aria-expanded="${isFirst}"
+                            aria-controls="content-${itemId}"
+                            onclick="toggleAccordion('${itemId}', ${index})"
+                        >
+                            <span class="text-gray-800">${symbol.name}</span>
+                            <svg class="accordion-icon w-5 h-5 text-${symbol.color}-600 transition-transform duration-300" 
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Contenido del Acordeón -->
+                        <div 
+                            id="content-${itemId}"
+                            class="accordion-content p-4 bg-white transition-all duration-500 ease-out"
+                            style="max-height: ${isFirst ? '1000px' : '0'}; overflow: hidden;"
+                            aria-labelledby="header-${itemId}"
+                        >
+                            ${imageBlock} <!-- Se inserta el bloque de la imagen aquí -->
+                            <p class="text-gray-600 mb-4 italic border-l-4 border-${symbol.color}-400 pl-3">${symbol.description}</p>
+                            <h3 class="text-md font-bold mb-2 text-gray-800">Atributos Principales:</h3>
+                            <ul class="list-none space-y-2">
+                                ${detailsList}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                accordionContainer.insertAdjacentHTML('beforeend', accordionItem);
+
+                // Inicializar la altura del contenido (para que la transición funcione)
+                const content = document.getElementById(`content-${itemId}`);
+                if (isFirst) {
+                    // Esperar un momento para que la imagen cargue y el scrollHeight sea correcto
+                    setTimeout(() => {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }, 50); 
+                }
+            });
+        }
+
+        /**
+         * Maneja la apertura y cierre de los elementos del acordeón.
+         * @param {string} id - El ID del símbolo.
+         * @param {number} currentIndex - El índice del elemento clickeado.
+         */
+        function toggleAccordion(id, currentIndex) {
+            const content = document.getElementById(`content-${id}`);
+            const header = document.getElementById(`header-${id}`);
+            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+            // Cierra todos los demás
+            document.querySelectorAll('.accordion-header').forEach((h, index) => {
+                if (index !== currentIndex) {
+                    h.setAttribute('aria-expanded', 'false');
+                    const otherContent = document.getElementById(`content-symbol-${index}`);
+                    otherContent.style.maxHeight = '0';
+                }
+            });
+
+            // Alterna el elemento clickeado
+            if (isExpanded) {
+                // Cerrar
+                content.style.maxHeight = '0';
+                header.setAttribute('aria-expanded', 'false');
+            } else {
+                // Abrir
+                // Forzar un recálculo de scrollHeight justo antes de abrir
+                content.style.maxHeight = 'none'; 
+                const scrollHeight = content.scrollHeight;
+                content.style.maxHeight = '0'; // Reset para la transición
+                
+                // Aplicar altura
+                content.style.maxHeight = scrollHeight + "px";
+                header.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        // Ejecutar la inicialización
+        initializeAccordion();
+
+        // Función para asegurar que el maxHeight se recalcula en redimensionamiento
+        window.addEventListener('resize', () => {
+            symbolsData.forEach((symbol, index) => {
+                const itemId = `symbol-${index}`;
+                const content = document.getElementById(`content-${itemId}`);
+                const header = document.getElementById(`header-${itemId}`);
+                
+                if (header.getAttribute('aria-expanded') === 'true' && content.style.maxHeight !== '0px') {
+                    // Temporalmente remover la transición para evitar parpadeo
+                    content.style.transition = 'none';
+                    content.style.maxHeight = 'none'; // Permitir que el navegador calcule el scrollHeight real
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    
+                    // Volver a aplicar la transición después de un breve momento
+                    setTimeout(() => {
+                        content.style.transition = 'max-height 0.5s ease-out';
+                    }, 10);
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
