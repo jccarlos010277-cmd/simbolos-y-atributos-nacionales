@@ -3,299 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Símbolos y Atributos Nacionales de Cuba</title>
+    <title>Símbolos de Cuba | Interfaz Cyberpunk</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Configuración de Tailwind para un color primario cubano (azul) -->
+    
+    <!-- Configuración de Tailwind para un tema oscuro y neón -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'cuban-blue': '#1565C0', // Azul fuerte para la bandera
-                        'cuban-red': '#E53935',  // Rojo fuerte para el triángulo
-                        'neutral-light': '#F8F9FA',
+                        'dark-bg': '#0A0A1F',    // Fondo muy oscuro
+                        'neon-cyan': '#00FFFF',   // CIAN neón
+                        'neon-magenta': '#FF00FF', // MAGENTA neón
+                        'neon-yellow': '#FFFF00', // Amarillo neón
+                    },
+                    boxShadow: {
+                        // Clases para efectos de brillo neón
+                        'neon-cyan': '0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5)',
+                        'neon-magenta': '0 0 10px rgba(255, 0, 255, 0.7), 0 0 20px rgba(255, 0, 255, 0.5)',
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        // Usando Inter, pero con estilos que lo hagan parecer más futurista
+                        sans: ['Inter', 'sans-serif'], 
                     },
                 }
             }
         }
     </script>
+    
     <style>
-        /* Estilos base para el cuerpo */
+        /* Estilos base para el cuerpo con fondo oscuro */
         body {
-            background-color: #f0f4f8; /* Fondo muy claro */
+            background-color: theme('colors.dark-bg');
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
-        /* Clase para el icono de acordeón */
-        .accordion-icon {
-            transition: transform 0.3s ease;
+
+        /* Estilo para las tarjetas interactivas */
+        .symbol-card {
+            background-color: #11112C;
+            border: 1px solid #1A1A40;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
         }
-        .accordion-header[aria-expanded="true"] .accordion-icon {
-            transform: rotate(180deg);
+
+        .symbol-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: theme('boxShadow.neon-cyan');
+            border-color: theme('colors.neon-cyan');
         }
-        /* Estilo para el contenedor de la imagen para asegurar el centrado */
-        .image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: auto; /* Ajuste automático de altura */
-            max-height: 250px; /* Limitar la altura máxima de las imágenes */
-            overflow: hidden;
+
+        /* Estilo para el panel de detalles para que se vea como una terminal */
+        #detail-panel {
+            background-color: #0A0A1F;
+            border: 2px solid theme('colors.neon-cyan');
+            box-shadow: theme('boxShadow.neon-cyan');
+        }
+
+        /* Animación de entrada de la tarjeta */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <div id="app-container" class="w-full max-w-4xl bg-white shadow-2xl rounded-xl overflow-hidden transform transition duration-500 ease-in-out hover:shadow-3xl">
+    <div id="app-container" class="w-full max-w-5xl bg-dark-bg shadow-2xl rounded-2xl transform transition duration-500 ease-in-out">
         
-        <!-- Encabezado -->
-        <header class="p-6 bg-cuban-blue text-white text-center rounded-t-xl">
-            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">
-                🇨🇺 Símbolos y Atributos de Cuba
+        <!-- Encabezado con estética futurista -->
+        <header class="p-6 text-center rounded-t-2xl border-b-2 border-neon-cyan">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-widest text-neon-cyan drop-shadow-neon-cyan">
+                // DATASTREAM: CUBAN HERALDRY //
             </h1>
-            <p class="mt-2 text-lg font-light opacity-90">Explora la identidad y herencia nacional cubana</p>
+            <p class="mt-2 text-lg font-light text-gray-400">Identidad Nacional | Acceso 00.A</p>
         </header>
 
-        <!-- Contenedor del Acordeón -->
-        <div id="symbols-accordion" class="p-6 space-y-4">
-            <!-- El contenido interactivo se generará aquí mediante JavaScript -->
+        <!-- Contenedor Principal (Grid de Símbolos) -->
+        <div id="symbols-grid" class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity duration-500">
+            <!-- Las tarjetas se generarán aquí -->
+        </div>
+
+        <!-- Panel de Detalles (Inicialmente oculto) -->
+        <div id="detail-panel" class="p-8 absolute inset-0 rounded-2xl hidden opacity-0 transition-opacity duration-500 z-10">
+            <button onclick="hideDetail()" class="absolute top-4 right-4 text-neon-magenta text-3xl font-bold hover:text-white transition duration-200 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </button>
+            <h2 id="detail-name" class="text-4xl font-extrabold mb-4 border-b pb-2 border-neon-magenta text-neon-yellow"></h2>
+            <div class="md:flex md:space-x-8">
+                <div class="md:w-1/3 mb-6 md:mb-0">
+                    <div class="image-container rounded-lg border-2 border-neon-cyan overflow-hidden shadow-neon-cyan">
+                        <img id="detail-image" src="" alt="" class="w-full h-full object-contain p-2" />
+                    </div>
+                </div>
+                <div class="md:w-2/3">
+                    <p id="detail-description" class="text-gray-300 mb-6 italic leading-relaxed"></p>
+                    <h3 class="text-xl font-semibold mb-3 text-neon-cyan">ATRIBUTOS CLAVE:</h3>
+                    <ul id="detail-attributes" class="space-y-3">
+                        <!-- Detalles de atributos -->
+                    </ul>
+                </div>
+            </div>
         </div>
         
     </div>
 
     <script>
-        // Definición de los símbolos nacionales, sus atributos y ahora las URLs de las imágenes
+        // Definición de los símbolos nacionales, sus atributos y URLs de imágenes
         const symbolsData = [
             {
-                name: "La Bandera Nacional",
-                description: "Símbolo de la unidad, la libertad y la soberanía. Creada en 1849. Sus colores representan ideales y sacrificios.",
+                name: "BANDERA NACIONAL",
+                description: "Matriz fundamental de la identidad cubana, codificada en 1849. Sus patrones cromáticos reflejan los ideales y la lucha por la soberanía total.",
                 details: [
-                    "Tres franjas azules: Representan los tres departamentos militares de la isla.",
-                    "Dos franjas blancas: Simbolizan la pureza de los ideales y la virtud.",
-                    "Triángulo rojo: Evoca la sangre derramada y el valor, y el color es el de la masonería (libertad, igualdad, fraternidad).",
-                    "Estrella blanca: 'La Estrella Solitaria', emblema de la absoluta libertad e independencia."
+                    "Tres franjas AZULES (CYAN): Unidades Territoriales Militares (Occidente, Centro, Oriente).",
+                    "Dos franjas BLANCAS (DATA PUREZA): Simbolizan la fuerza de los ideales virtuosos y la paz.",
+                    "Triángulo ROJO (CORE-ENERGY): Representa la sangre vertida en el conflicto de liberación.",
+                    "Estrella SOLITARIA (LIBERTAD): Representación de la absoluta independencia del sistema."
                 ],
-                color: 'cuban-red',
-                image: {
-                    url: "https://placehold.co/400x200/E53935/ffffff?text=Bandera+Nacional",
-                    alt: "Bandera Nacional de Cuba"
-                }
+                color: 'neon-cyan',
+                image: { url: "https://placehold.co/400x200/0A0A1F/00FFFF?text=FLAG+MATRIX", alt: "Bandera Nacional de Cuba" }
             },
             {
-                name: "El Escudo de la Palma Real",
-                description: "El emblema de la nación, adoptado en 1906. Contiene elementos que representan la posición geográfica y la riqueza natural de Cuba.",
+                name: "ESCUDO DE LA PALMA",
+                description: "Emblema de la República (1906). Su estructura cifrada mapea la geografía estratégica y la riqueza biológica de la isla.",
                 details: [
-                    "Llave de oro: Entre dos promontorios, representa a Cuba como la 'Llave del Golfo de México'.",
-                    "Cuartel superior con franjas: Las cinco franjas del pabellón nacional (referencia a la bandera).",
-                    "Cuartel inferior con Palma Real: La palmera es el árbol nacional, símbolo de la nobleza y la fortaleza.",
-                    "Gorro Frigio Rojo: En la parte superior, con una estrella blanca, es el símbolo universal de la libertad."
+                    "LLAVE (GATEWAY): Cuba como punto de control estratégico del Golfo de México.",
+                    "FRANJAS (REFERENCE): Referencia visual a la configuración de la bandera nacional.",
+                    "PALMA REAL (FORTALEZA): El árbol nacional, vector de nobleza, fortaleza y resistencia.",
+                    "GORRO FRIGIO (LIBERTY PROTOCOL): Símbolo global de la emancipación y la autonomía."
                 ],
-                color: 'cuban-blue',
-                image: {
-                    url: "https://placehold.co/200x250/1565C0/ffffff?text=Escudo+de+Cuba",
-                    alt: "Escudo de la Palma Real de Cuba"
-                }
+                color: 'neon-magenta',
+                image: { url: "https://placehold.co/200x250/0A0A1F/FF00FF?text=SHIELD+MODEL", alt: "Escudo de la Palma Real de Cuba" }
             },
             {
-                name: "El Himno de Bayamo",
-                description: "La Bayamesa, compuesto por Pedro Figueredo (Perucho) en 1868. Es un llamado a la lucha y al honor patrio, entonado por primera vez durante la toma de Bayamo.",
+                name: "HIMNO DE BAYAMO",
+                description: "Secuencia de audio de combate y honor (1868). Un algoritmo de inspiración que impulsa la defensa de la arquitectura patria.",
                 details: [
-                    "Título original: La Bayamesa.",
-                    "Letra: Canto de combate y heroísmo que se ha mantenido vigente hasta hoy.",
-                    "Mensaje: Inspiración para defender la patria y morir gloriosamente por ella."
+                    "NOMBRE CLAVE: La Bayamesa.",
+                    "SECUENCIA DE TEXTO: Canto cifrado de heroísmo y llamado a la acción sacrificial.",
+                    "FUNCIÓN: Módulo de motivación para la resistencia y la gloria póstuma."
                 ],
-                color: 'cuban-red',
-                image: {
-                    url: "https://placehold.co/400x100/E53935/ffffff?text=Himno+de+Bayamo",
-                    alt: "Partitura y Letra del Himno de Bayamo"
-                }
+                color: 'neon-cyan',
+                image: { url: "https://placehold.co/400x100/0A0A1F/00FFFF?text=AUDIO+SEQUENCE", alt: "Partitura del Himno de Bayamo" }
             },
             {
-                name: "La Mariposa (Flor Nacional)",
-                description: "El jazmín de mariposa (Hedychium coronarium) es la flor nacional de Cuba. Símbolo de la pureza, la rebeldía y la independencia.",
+                name: "FLOR (LA MARIPOSA)",
+                description: "Jazmín de mariposa (Hedychium coronarium). Código floral de la pureza, el desafío a la opresión y el secretismo de la independencia.",
                 details: [
-                    "Color: Blanca, lo que simboliza la paz.",
-                    "Uso histórico: Las mujeres cubanas la usaban para llevar mensajes ocultos a los mambises (soldados independentistas) durante la guerra.",
-                    "Fragancia: Posee un aroma intenso y exquisito."
+                    "CROMÁTICA: Blanco, asociado al concepto de DATA-PAZ.",
+                    "PROTOCOLO HISTÓRICO: Utilizado como canal de comunicación encubierta por la resistencia mambisa.",
+                    "ATRIBUTO SENSORIAL: Emite una señal aromática intensa y codificable."
                 ],
-                color: 'cuban-blue',
-                image: {
-                    url: "https://placehold.co/200x200/1565C0/ffffff?text=Flor+Nacional",
-                    alt: "Flor de Mariposa (Jazmín)"
-                }
+                color: 'neon-magenta',
+                image: { url: "https://placehold.co/200x200/0A0A1F/FF00FF?text=FLORAL+UNIT", alt: "Flor de Mariposa (Jazmín)" }
             },
             {
-                name: "La Palma Real (Árbol Nacional)",
-                description: "La Roystonea regia, dominante en el paisaje cubano. Simboliza la nobleza, la realeza y la perenne juventud de la nación.",
+                name: "ÁRBOL (PALMA REAL)",
+                description: "Roystonea regia. Vector biológico de la nación, simbolizando la perenne vitalidad, nobleza y la alta arquitectura de la isla.",
                 details: [
-                    "Presencia: Se encuentra en casi todo el territorio cubano.",
-                    "Simbolismo: Por su altura y belleza, representa la fortaleza y la vida.",
-                    "Aparición: Es el único símbolo nacional que se incluye en el Escudo de la República."
+                    "DISTRIBUCIÓN: Mapeado en casi todos los sectores del territorio.",
+                    "METADATA: Su altura y resistencia codifican la fortaleza del espíritu nacional.",
+                    "INTEGRACIÓN: Única unidad biológica incrustada en el Escudo de la República."
                 ],
-                color: 'cuban-red',
-                image: {
-                    url: "https://placehold.co/200x300/E53935/ffffff?text=Palma+Real",
-                    alt: "Palma Real Cubana"
-                }
+                color: 'neon-cyan',
+                image: { url: "https://placehold.co/200x300/0A0A1F/00FFFF?text=BIOMASS+TOWER", alt: "Palma Real Cubana" }
             },
             {
-                name: "El Tocororo (Ave Nacional)",
-                description: "El Trogón Cubano (Priotelus temnurus) es el ave nacional. Su simbolismo se debe a sus colores y su comportamiento en cautiverio.",
+                name: "AVE (EL TOCORORO)",
+                description: "Trogón Cubano (Priotelus temnurus). Unidad aviar nacional, reflejando el cromatismo de la bandera y el valor innegociable de la libertad.",
                 details: [
-                    "Colores: Rojo, blanco y azul (igual que la bandera nacional).",
-                    "Comportamiento: Es un ave endémica que no puede vivir en cautiverio, lo que la convierte en un símbolo del amor a la libertad y la independencia.",
-                    "Endémico: Solo existe en la isla de Cuba, reforzando la identidad nacional."
+                    "CROMÁTICA REFLECTIVA: Patrón de Rojo, Blanco y Azul (coincidencia de la matriz nacional).",
+                    "BEHAVIORAL LOCK: No sobrevive en cautiverio; simboliza el rechazo absoluto a la restricción.",
+                    "ENDEMISMO: Geográficamente restringido a Cuba, reforzando la singularidad de la matriz de identidad."
                 ],
-                color: 'cuban-blue',
-                image: {
-                    url: "https://placehold.co/200x200/1565C0/ffffff?text=Tocororo",
-                    alt: "Tocororo (Ave Nacional de Cuba)"
-                }
+                color: 'neon-magenta',
+                image: { url: "https://placehold.co/200x200/0A0A1F/FF00FF?text=AVIAR+UNIT", alt: "Tocororo (Ave Nacional de Cuba)" }
             }
         ];
 
-        // Referencia al contenedor del acordeón
-        const accordionContainer = document.getElementById('symbols-accordion');
+        // Referencias a los elementos DOM
+        const appContainer = document.getElementById('app-container');
+        const gridContainer = document.getElementById('symbols-grid');
+        const detailPanel = document.getElementById('detail-panel');
+        const detailName = document.getElementById('detail-name');
+        const detailDescription = document.getElementById('detail-description');
+        const detailImage = document.getElementById('detail-image');
+        const detailAttributes = document.getElementById('detail-attributes');
 
         /**
-         * Inicializa la interfaz de acordeón para los símbolos.
+         * Inicializa la interfaz de la cuadrícula de símbolos.
          */
-        function initializeAccordion() {
+        function initializeGrid() {
+            gridContainer.innerHTML = ''; // Limpiar el contenedor
             symbolsData.forEach((symbol, index) => {
-                const isFirst = index === 0;
-                const itemId = `symbol-${index}`;
-
-                // Construcción de los detalles como una lista
-                const detailsList = symbol.details.map(detail =>
-                    `<li class="mb-1 text-gray-700 leading-relaxed pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-${symbol.color}-600">${detail}</li>`
-                ).join('');
-
-                // Bloque HTML de la imagen
-                const imageBlock = `
-                    <div class="mb-4 image-container">
-                        <img src="${symbol.image.url}" 
-                             alt="${symbol.image.alt}" 
-                             class="rounded-lg shadow-lg max-w-full max-h-full object-contain border-4 border-${symbol.color}-100"
-                             onerror="this.onerror=null; this.src='https://placehold.co/300x150/9CA3AF/ffffff?text=Imagen+No+Disponible'; this.style.border='2px dashed #9CA3AF';"
-                        />
-                    </div>
-                `;
-
-                // Creación del elemento del acordeón
-                const accordionItem = `
-                    <div class="border border-gray-200 rounded-lg overflow-hidden shadow-md">
+                const cardColor = symbol.color;
+                
+                const cardHTML = `
+                    <div class="symbol-card p-6 rounded-xl shadow-lg hover:shadow-${cardColor} transform transition-all duration-500 fade-in" 
+                         onclick="showDetail(${index})">
                         
-                        <!-- Cabecera del Acordeón (Botón) -->
-                        <button 
-                            id="header-${itemId}"
-                            class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-lg bg-${symbol.color}-50 hover:bg-${symbol.color}-100 transition-all duration-300 focus:outline-none"
-                            aria-expanded="${isFirst}"
-                            aria-controls="content-${itemId}"
-                            onclick="toggleAccordion('${itemId}', ${index})"
-                        >
-                            <span class="text-gray-800">${symbol.name}</span>
-                            <svg class="accordion-icon w-5 h-5 text-${symbol.color}-600 transition-transform duration-300" 
-                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
+                        <div class="mb-4 text-center">
+                            <img src="${symbol.image.url}" 
+                                 alt="${symbol.image.alt}" 
+                                 class="w-full h-auto max-h-40 object-contain rounded-md border-2 border-gray-700 mx-auto"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/200x100/11112C/9CA3AF?text=NO+IMAGE';"
+                            />
+                        </div>
 
-                        <!-- Contenido del Acordeón -->
-                        <div 
-                            id="content-${itemId}"
-                            class="accordion-content p-4 bg-white transition-all duration-500 ease-out"
-                            style="max-height: ${isFirst ? '1000px' : '0'}; overflow: hidden;"
-                            aria-labelledby="header-${itemId}"
-                        >
-                            ${imageBlock} <!-- Se inserta el bloque de la imagen aquí -->
-                            <p class="text-gray-600 mb-4 italic border-l-4 border-${symbol.color}-400 pl-3">${symbol.description}</p>
-                            <h3 class="text-md font-bold mb-2 text-gray-800">Atributos Principales:</h3>
-                            <ul class="list-none space-y-2">
-                                ${detailsList}
-                            </ul>
+                        <h3 class="text-xl font-bold mb-2 text-${cardColor} drop-shadow-neon-cyan">${symbol.name}</h3>
+                        <p class="text-gray-400 text-sm italic">${symbol.description.substring(0, 75)}...</p>
+                        <div class="mt-4 text-${cardColor} font-semibold text-right">
+                            [ ACCESO > ]
                         </div>
                     </div>
                 `;
-                accordionContainer.insertAdjacentHTML('beforeend', accordionItem);
-
-                // Inicializar la altura del contenido (para que la transición funcione)
-                const content = document.getElementById(`content-${itemId}`);
-                if (isFirst) {
-                    // Esperar un momento para que la imagen cargue y el scrollHeight sea correcto
-                    setTimeout(() => {
-                        content.style.maxHeight = content.scrollHeight + "px";
-                    }, 50); 
-                }
+                gridContainer.insertAdjacentHTML('beforeend', cardHTML);
             });
         }
 
         /**
-         * Maneja la apertura y cierre de los elementos del acordeón.
-         * @param {string} id - El ID del símbolo.
-         * @param {number} currentIndex - El índice del elemento clickeado.
+         * Muestra el panel de detalles para un símbolo específico.
+         * @param {number} index - El índice del símbolo en symbolsData.
          */
-        function toggleAccordion(id, currentIndex) {
-            const content = document.getElementById(`content-${id}`);
-            const header = document.getElementById(`header-${id}`);
-            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        function showDetail(index) {
+            const symbol = symbolsData[index];
 
-            // Cierra todos los demás
-            document.querySelectorAll('.accordion-header').forEach((h, index) => {
-                if (index !== currentIndex) {
-                    h.setAttribute('aria-expanded', 'false');
-                    const otherContent = document.getElementById(`content-symbol-${index}`);
-                    otherContent.style.maxHeight = '0';
-                }
-            });
-
-            // Alterna el elemento clickeado
-            if (isExpanded) {
-                // Cerrar
-                content.style.maxHeight = '0';
-                header.setAttribute('aria-expanded', 'false');
-            } else {
-                // Abrir
-                // Forzar un recálculo de scrollHeight justo antes de abrir
-                content.style.maxHeight = 'none'; 
-                const scrollHeight = content.scrollHeight;
-                content.style.maxHeight = '0'; // Reset para la transición
+            // 1. Ocultar la cuadrícula con transición de opacidad
+            gridContainer.classList.add('opacity-0');
+            setTimeout(() => {
+                gridContainer.classList.add('hidden');
                 
-                // Aplicar altura
-                content.style.maxHeight = scrollHeight + "px";
-                header.setAttribute('aria-expanded', 'true');
-            }
+                // 2. Llenar los detalles
+                detailName.textContent = `// ${symbol.name} //`;
+                detailDescription.textContent = symbol.description;
+                detailImage.src = symbol.image.url;
+                detailImage.alt = symbol.image.alt;
+                
+                // 3. Llenar los atributos
+                detailAttributes.innerHTML = symbol.details.map(detail =>
+                    `<li class="text-gray-400 pl-4 relative before:content-['>'] before:absolute before:left-0 before:text-${symbol.color}">${detail}</li>`
+                ).join('');
+
+                // 4. Mostrar el panel de detalles con animación
+                detailPanel.classList.remove('hidden');
+                setTimeout(() => {
+                    detailPanel.classList.remove('opacity-0');
+                    appContainer.style.height = detailPanel.scrollHeight + 50 + 'px'; // Ajustar altura del contenedor
+                }, 50);
+
+            }, 500); // Esperar que termine la transición de opacidad
+        }
+
+        /**
+         * Oculta el panel de detalles y muestra la cuadrícula.
+         */
+        function hideDetail() {
+            // 1. Ocultar el panel de detalles con transición de opacidad
+            detailPanel.classList.add('opacity-0');
+            appContainer.style.height = 'auto'; // Devolver altura a automático
+            setTimeout(() => {
+                detailPanel.classList.add('hidden');
+                
+                // 2. Mostrar la cuadrícula
+                gridContainer.classList.remove('hidden');
+                setTimeout(() => {
+                    gridContainer.classList.remove('opacity-0');
+                }, 50);
+            }, 500); // Esperar que termine la transición de opacidad
         }
 
         // Ejecutar la inicialización
-        initializeAccordion();
-
-        // Función para asegurar que el maxHeight se recalcula en redimensionamiento
-        window.addEventListener('resize', () => {
-            symbolsData.forEach((symbol, index) => {
-                const itemId = `symbol-${index}`;
-                const content = document.getElementById(`content-${itemId}`);
-                const header = document.getElementById(`header-${itemId}`);
-                
-                if (header.getAttribute('aria-expanded') === 'true' && content.style.maxHeight !== '0px') {
-                    // Temporalmente remover la transición para evitar parpadeo
-                    content.style.transition = 'none';
-                    content.style.maxHeight = 'none'; // Permitir que el navegador calcule el scrollHeight real
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    
-                    // Volver a aplicar la transición después de un breve momento
-                    setTimeout(() => {
-                        content.style.transition = 'max-height 0.5s ease-out';
-                    }, 10);
-                }
-            });
-        });
+        initializeGrid();
 
     </script>
 </body>
 </html>
+
