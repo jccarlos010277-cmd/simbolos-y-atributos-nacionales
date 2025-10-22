@@ -72,6 +72,37 @@
             animation: staggeredFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0; /* Asegurar que estén ocultas al inicio */
         }
+
+        /* --- Animaciones de Texto para el Panel de Detalles --- */
+
+        /* 1. Animación del Título (Slide Down) */
+        @keyframes fadeInSlideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .anim-title {
+            animation: fadeInSlideDown 0.6s ease-out forwards;
+        }
+
+        /* 2. Animación de la Descripción (Fade and Scale) */
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .anim-description {
+            animation: fadeInScale 0.7s ease-out forwards;
+            animation-delay: 0.2s; /* Inicia después del título */
+        }
+
+        /* 3. Animación de los Ítems de la Lista (Staggered Slide Left) */
+        @keyframes staggeredListFade {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .anim-list-item {
+            animation: staggeredListFade 0.4s ease-out forwards;
+            opacity: 0; /* Inicialmente oculto, el JS manejará el delay */
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -296,6 +327,11 @@
 
             // 1. Ocultar la cuadrícula con transición de opacidad
             gridContainer.classList.add('opacity-0');
+            
+            // Limpiar clases de animación existentes para forzar el reinicio
+            detailName.classList.remove('anim-title');
+            detailDescription.classList.remove('anim-description');
+
             setTimeout(() => {
                 gridContainer.classList.add('hidden');
                 
@@ -308,27 +344,37 @@
                 // Determinar el color de acento del detalle
                 const accentColor = symbol.color;
 
-                // 3. Llenar los atributos
-                detailAttributes.innerHTML = symbol.details.map(detail =>
-                    `<li class="text-gray-700 pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-${accentColor}">${detail}</li>`
+                // 3. Llenar los atributos con clase de animación y retraso
+                const listStartDelay = 0.5; // Retraso para que la lista empiece a animarse después de la descripción
+                detailAttributes.innerHTML = symbol.details.map((detail, i) =>
+                    // Aplicamos la clase de animación y el retraso en línea para el efecto escalonado
+                    `<li class="text-gray-700 pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-${accentColor} anim-list-item" 
+                          style="animation-delay: ${listStartDelay + (i * 0.15)}s;">${detail}</li>`
                 ).join('');
 
                 // 4. Aplicar estilos del color de acento al panel
                 detailDescription.classList.remove('border-accent-blue', 'border-accent-red');
                 detailDescription.classList.add(`border-${accentColor}`);
                 
+                // Actualizar el color del título de atributos
                 detailAttributes.previousElementSibling.classList.remove('text-accent-blue', 'text-accent-red');
                 detailAttributes.previousElementSibling.classList.add(`text-${accentColor}`);
-
 
                 // 5. Mostrar el panel de detalles con animación
                 detailPanel.classList.remove('hidden');
                 setTimeout(() => {
                     detailPanel.classList.remove('opacity-0');
                     appContainer.style.height = detailPanel.scrollHeight + 50 + 'px'; // Ajustar altura del contenedor
-                }, 50);
 
-            }, 500); // Esperar que termine la transición de opacidad
+                    // 6. Aplicar las clases de animación para iniciar el efecto de texto
+                    // Se usa un pequeño timeout para asegurar que el DOM ha sido actualizado y la animación se dispara
+                    setTimeout(() => {
+                        detailName.classList.add('anim-title');
+                        detailDescription.classList.add('anim-description');
+                    }, 50);
+
+                }, 500); // Esperar que termine la transición de opacidad del grid
+            }, 500); 
         }
 
         /**
