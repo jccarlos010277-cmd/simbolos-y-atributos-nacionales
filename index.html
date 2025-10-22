@@ -7,23 +7,22 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Configuración de Tailwind para un tema moderno y claro -->
+    <!-- Configuración de Tailwind -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'accent-blue': '#2196F3',  // Azul moderno (similar al flag)
-                        'accent-red': '#F44336',    // Rojo moderno (similar al flag)
+                        'accent-blue': '#2196F3',
+                        'accent-red': '#F44336',
                         'primary-text': '#1F2937',
                         'light-bg': '#F9FAFB',
                     },
                     boxShadow: {
-                        // Sombra sutil para un look moderno
-                        'card-shadow': '0 4px 15px rgba(0, 0, 0, 0.08)', 
+                        'card-shadow': '0 4px 15px rgba(0, 0, 0, 0.08)',
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'], 
+                        sans: ['Inter', 'sans-serif'],
                     },
                 }
             }
@@ -31,17 +30,20 @@
     </script>
     
     <style>
-        /* Estilos base para el cuerpo con fondo blanco */
         body {
-            background-color: white; /* Fondo blanco solicitado */
+            background-color: white;
             color: theme('colors.primary-text');
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 1rem;
         }
 
-        /* Estilo para las tarjetas interactivas */
+        #app-container {
+            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
         .symbol-card {
             background-color: theme('colors.light-bg');
             border: 1px solid theme('colors.gray.100');
@@ -50,19 +52,21 @@
             box-shadow: theme('boxShadow.card-shadow');
         }
 
-        .symbol-card:hover {
+        .symbol-card:hover, .symbol-card:focus-visible {
             transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            outline: 2px solid theme('colors.accent-blue');
+            outline-offset: 2px;
         }
 
-        /* Estilo para el panel de detalles para un look limpio */
         #detail-panel {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.85);
             border: 1px solid theme('colors.gray.200');
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
         
-        /* Animación de entrada escalonada para las tarjetas */
         @keyframes staggeredFadeIn {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
@@ -70,62 +74,53 @@
 
         .fade-in-staggered {
             animation: staggeredFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0; /* Asegurar que estén ocultas al inicio */
+            opacity: 0;
         }
 
-        /* --- Animaciones de Texto para el Panel de Detalles --- */
-
-        /* 1. Animación del Título (Slide Down) */
+        /* --- Animaciones de Texto --- */
         @keyframes fadeInSlideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .anim-title {
-            animation: fadeInSlideDown 0.6s ease-out forwards;
-        }
+        .anim-title { animation: fadeInSlideDown 0.6s ease-out forwards; }
 
-        /* 2. Animación de la Descripción (Fade and Scale) */
         @keyframes fadeInScale {
             from { opacity: 0; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
         }
         .anim-description {
             animation: fadeInScale 0.7s ease-out forwards;
-            animation-delay: 0.2s; /* Inicia después del título */
+            animation-delay: 0.2s;
         }
 
-        /* 3. Animación de los Ítems de la Lista (Staggered Slide Left) */
         @keyframes staggeredListFade {
             from { opacity: 0; transform: translateX(-10px); }
             to { opacity: 1; transform: translateX(0); }
         }
         .anim-list-item {
             animation: staggeredListFade 0.4s ease-out forwards;
-            opacity: 0; /* Inicialmente oculto, el JS manejará el delay */
+            opacity: 0;
         }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <div id="app-container" class="w-full max-w-5xl bg-white shadow-xl rounded-2xl transform transition duration-500 ease-in-out">
+    <div id="app-container" class="w-full max-w-5xl bg-white shadow-xl rounded-2xl transform transition duration-500 ease-in-out overflow-hidden">
         
-        <!-- Encabezado con estética moderna -->
-        <header class="p-6 text-center rounded-t-2xl border-b border-gray-200">
+        <!-- MODIFICADO: Añadido id="main-header" y clases de transición -->
+        <header id="main-header" class="p-6 text-center rounded-t-2xl border-b border-gray-200 transition-opacity duration-500">
             <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-primary-text">
                 Símbolos y Atributos Patrios de Cuba
             </h1>
             <p class="mt-2 text-lg font-light text-gray-500">Explora la identidad y herencia nacional</p>
         </header>
 
-        <!-- Contenedor Principal (Grid de Símbolos) -->
-        <!-- La cuadrícula ahora contiene elementos con col-span-full para los títulos de sección -->
         <div id="symbols-grid" class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity duration-500">
-            <!-- Las tarjetas y los títulos se generarán aquí -->
+            <!-- Las tarjetas se generan aquí -->
         </div>
 
-        <!-- Panel de Detalles (Inicialmente oculto) -->
         <div id="detail-panel" class="p-8 absolute inset-0 rounded-2xl hidden opacity-0 transition-opacity duration-500 z-10">
-            <button onclick="hideDetail()" class="absolute top-4 right-4 text-gray-600 text-3xl font-bold hover:text-accent-red transition duration-200 focus:outline-none">
+            <button onclick="hideDetail()" aria-label="Volver a la lista de símbolos" class="absolute top-4 right-4 text-gray-600 text-3xl font-bold hover:text-accent-red transition duration-200 focus:outline-none focus:ring-2 focus:ring-accent-red rounded-full p-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
@@ -140,9 +135,7 @@
                 <div class="md:w-2/3">
                     <p id="detail-description" class="text-gray-600 mb-6 italic leading-relaxed border-l-4 border-accent-blue pl-4"></p>
                     <h3 class="text-xl font-semibold mb-3 text-accent-blue">ATRIBUTOS CLAVE:</h3>
-                    <ul id="detail-attributes" class="space-y-3">
-                        <!-- Detalles de atributos -->
-                    </ul>
+                    <ul id="detail-attributes" class="space-y-3"></ul>
                 </div>
             </div>
         </div>
@@ -150,103 +143,17 @@
     </div>
 
     <script>
-        // Definición de los símbolos nacionales, sus atributos y URLs de imágenes
         const symbolsData = [
-            {
-                name: "Bandera Nacional",
-                type: "Simbolo", // Nuevo campo para diferenciar
-                description: "Símbolo de la unidad, la libertad y la soberanía. Creada en 1849. Sus patrones cromáticos reflejan los ideales y la lucha por la soberanía total.",
-                details: [
-                    "Tres franjas azules: Representan los tres departamentos militares de la isla.",
-                    "Dos franjas blancas: Simbolizan la fuerza de los ideales virtuosos y la paz.",
-                    "Triángulo rojo: Evoca la sangre vertida en el conflicto de liberación y el valor.",
-                    "Estrella Solitaria: Emblema de la absoluta libertad e independencia."
-                ],
-                color: 'accent-red',
-                image: { 
-                    url: "https://i.postimg.cc/QtBSkhRd/Bandera-cubana-aislada-Foto-Premium.jpg", 
-                    alt: "Bandera Nacional de Cuba" 
-                }
-            },
-            {
-                name: "Escudo de la Palma Real",
-                type: "Simbolo", // Nuevo campo para diferenciar
-                description: "Emblema de la República, adoptado en 1906. Su estructura cifrada mapea la geografía estratégica y la riqueza biológica de la isla.",
-                details: [
-                    "Llave de oro: Representa a Cuba como el punto de control estratégico del Golfo de México.",
-                    "Franjas: Referencia visual a la configuración de la bandera nacional.",
-                    "Palma Real: El árbol nacional, símbolo de nobleza, fortaleza y resistencia.",
-                    "Gorro Frigio: Símbolo global de la emancipación y la autonomía."
-                ],
-                color: 'accent-blue',
-                image: { 
-                    url: "https://i.postimg.cc/3Ry9CYPR/Coat-of-Arms-of-Cuba.jpg", 
-                    alt: "Escudo de la Palma Real de Cuba" 
-                }
-            },
-            {
-                name: "Himno de Bayamo",
-                type: "Simbolo", // Nuevo campo para diferenciar
-                description: "La Bayamesa, compuesto por Pedro Figueredo (Perucho) en 1868. Es un llamado a la lucha y al honor patrio, entonado por primera vez durante la toma de Bayamo.",
-                details: [
-                    "Nombre clave: La Bayamesa.",
-                    "Secuencia de texto: Canto de heroísmo y llamado a la acción sacrificial.",
-                    "Función: Módulo de motivación para la resistencia y la gloria póstuma."
-                ],
-                color: 'accent-red',
-                image: { 
-                    url: "https://i.postimg.cc/GmcQgkW1/himno-nacional.jpg", 
-                    alt: "Partitura del Himno de Bayamo" 
-                }
-            },
-            {
-                name: "Flor Nacional (La Mariposa)",
-                type: "Atributo", // Nuevo campo para diferenciar
-                description: "Jazmín de mariposa (Hedychium coronarium). Símbolo de la pureza, el desafío a la opresión y el secretismo de la independencia.",
-                details: [
-                    "Cromática: Blanca, asociada al concepto de paz y pureza.",
-                    "Uso Histórico: Utilizado como canal de comunicación encubierta por la resistencia mambisa.",
-                    "Atributo Sensorial: Emite una señal aromática intensa y exquisita."
-                ],
-                color: 'accent-blue',
-                image: { 
-                    url: "https://i.postimg.cc/kgncYx0m/flor-mariposa.jpg", 
-                    alt: "Flor de Mariposa (Jazmín)" 
-                }
-            },
-            {
-                name: "Árbol Nacional (Palma Real)",
-                type: "Atributo", // Nuevo campo para diferenciar
-                description: "Roystonea regia. Árbol que simboliza la perenne vitalidad, nobleza y la alta arquitectura de la isla.",
-                details: [
-                    "Distribución: Mapeado en casi todos los sectores del territorio.",
-                    "Metadata: Su altura y resistencia codifican la fortaleza del espíritu nacional.",
-                    "Integración: Única unidad biológica incrustada en el Escudo de la República."
-                ],
-                color: 'accent-red',
-                image: { 
-                    url: "https://i.postimg.cc/XYQgRrWS/palma-real1.jpg", 
-                    alt: "Palma Real Cubana" 
-                }
-            },
-            {
-                name: "Ave Nacional (El Tocororo)",
-                type: "Atributo", // Nuevo campo para diferenciar
-                description: "Trogón Cubano (Priotelus temnurus). Ave nacional, reflejando el cromatismo de la bandera y el valor innegociable de la libertad.",
-                details: [
-                    "Cromática Reflectiva: Patrón de Rojo, Blanco y Azul (coincidencia de la matriz nacional).",
-                    "Behavioral Lock: No sobrevive en cautiverio; simboliza el rechazo absoluto a la restricción.",
-                    "Endemismo: Geográficamente restringido a Cuba, reforzando la singularidad de la matriz de identidad."
-                ],
-                color: 'accent-blue',
-                image: { 
-                    url: "https://i.postimg.cc/76CXMwpf/El-tocororo.jpg", 
-                    alt: "Tocororo (Ave Nacional de Cuba)" 
-                }
-            }
+            { name: "Bandera Nacional", type: "Simbolo", description: "Símbolo de la unidad, la libertad y la soberanía. Creada en 1849. Sus patrones cromáticos reflejan los ideales y la lucha por la soberanía total.", details: ["Tres franjas azules: Representan los tres departamentos militares de la isla.", "Dos franjas blancas: Simbolizan la fuerza de los ideales virtuosos y la paz.", "Triángulo rojo: Evoca la sangre vertida en el conflicto de liberación y el valor.", "Estrella Solitaria: Emblema de la absoluta libertad e independencia."], color: 'accent-red', image: { url: "https://i.postimg.cc/QtBSkhRd/Bandera-cubana-aislada-Foto-Premium.jpg", alt: "Bandera Nacional de Cuba" } },
+            { name: "Escudo de la Palma Real", type: "Simbolo", description: "Emblema de la República, adoptado en 1906. Su estructura cifrada mapea la geografía estratégica y la riqueza biológica de la isla.", details: ["Llave de oro: Representa a Cuba como el punto de control estratégico del Golfo de México.", "Franjas: Referencia visual a la configuración de la bandera nacional.", "Palma Real: El árbol nacional, símbolo de nobleza, fortaleza y resistencia.", "Gorro Frigio: Símbolo global de la emancipación y la autonomía."], color: 'accent-blue', image: { url: "https://i.postimg.cc/3Ry9CYPR/Coat-of-Arms-of-Cuba.jpg", alt: "Escudo de la Palma Real de Cuba" } },
+            { name: "Himno de Bayamo", type: "Simbolo", description: "La Bayamesa, compuesto por Pedro Figueredo (Perucho) en 1868. Es un llamado a la lucha y al honor patrio, entonado por primera vez durante la toma de Bayamo.", details: ["Nombre clave: La Bayamesa.", "Secuencia de texto: Canto de heroísmo y llamado a la acción sacrificial.", "Función: Módulo de motivación para la resistencia y la gloria póstuma."], color: 'accent-red', image: { url: "https://i.postimg.cc/GmcQgkW1/himno-nacional.jpg", alt: "Partitura del Himno de Bayamo" } },
+            { name: "Flor Nacional (La Mariposa)", type: "Atributo", description: "Jazmín de mariposa (Hedychium coronarium). Símbolo de la pureza, el desafío a la opresión y el secretismo de la independencia.", details: ["Cromática: Blanca, asociada al concepto de paz y pureza.", "Uso Histórico: Utilizado como canal de comunicación encubierta por la resistencia mambisa.", "Atributo Sensorial: Emite una señal aromática intensa y exquisita."], color: 'accent-blue', image: { url: "https://i.postimg.cc/kgncYx0m/flor-mariposa.jpg", alt: "Flor de Mariposa (Jazmín)" } },
+            { name: "Árbol Nacional (Palma Real)", type: "Atributo", description: "Roystonea regia. Árbol que simboliza la perenne vitalidad, nobleza y la alta arquitectura de la isla.", details: ["Distribución: Mapeado en casi todos los sectores del territorio.", "Metadata: Su altura y resistencia codifican la fortaleza del espíritu nacional.", "Integración: Única unidad biológica incrustada en el Escudo de la República."], color: 'accent-red', image: { url: "https://i.postimg.cc/XYQgRrWS/palma-real1.jpg", alt: "Palma Real Cubana" } },
+            { name: "Ave Nacional (El Tocororo)", type: "Atributo", description: "Trogón Cubano (Priotelus temnurus). Ave nacional, reflejando el cromatismo de la bandera y el valor innegociable de la libertad.", details: ["Cromática Reflectiva: Patrón de Rojo, Blanco y Azul (coincidencia de la matriz nacional).", "Behavioral Lock: No sobrevive en cautiverio; simboliza el rechazo absoluto a la restricción.", "Endemismo: Geográficamente restringido a Cuba, reforzando la singularidad de la matriz de identidad."], color: 'accent-blue', image: { url: "https://i.postimg.cc/76CXMwpf/El-tocororo.jpg", alt: "Tocororo (Ave Nacional de Cuba)" } }
         ];
 
-        // Referencias a los elementos DOM
+        // MODIFICADO: Añadida la referencia al encabezado
+        const mainHeader = document.getElementById('main-header');
         const appContainer = document.getElementById('app-container');
         const gridContainer = document.getElementById('symbols-grid');
         const detailPanel = document.getElementById('detail-panel');
@@ -255,28 +162,19 @@
         const detailImage = document.getElementById('detail-image');
         const detailAttributes = document.getElementById('detail-attributes');
 
-        /**
-         * Función auxiliar para renderizar una tarjeta de símbolo/atributo.
-         * @param {Object} symbol - El objeto de datos del símbolo.
-         * @param {number} originalIndex - El índice original en el array symbolsData.
-         * @returns {string} El HTML de la tarjeta.
-         */
         function renderCard(symbol, originalIndex) {
             const cardColor = symbol.color;
-            
             return `
-                <div class="symbol-card p-6 rounded-xl transform transition-all duration-500 fade-in-staggered" 
+                <div class="symbol-card p-6 rounded-xl" 
                         onclick="showDetail(${originalIndex})"
+                        onkeydown="if(event.key === 'Enter') showDetail(${originalIndex})"
+                        role="button"
+                        tabindex="0"
                         style="animation-delay: ${originalIndex * 0.1}s;">
                     
                     <div class="mb-4 text-center">
-                        <img src="${symbol.image.url}" 
-                                alt="${symbol.image.alt}" 
-                                class="w-full h-auto max-h-56 object-contain rounded-md border-2 border-gray-200 mx-auto"
-                                onerror="this.onerror=null; this.src='https://placehold.co/200x100/F9FAFB/9CA3AF?text=IMAGEN+NO+CARGADA';"
-                        />
+                        <img src="${symbol.image.url}" alt="${symbol.image.alt}" class="w-full h-auto max-h-56 object-contain rounded-md border-2 border-gray-200 mx-auto" onerror="this.onerror=null; this.src='https://placehold.co/200x100/F9FAFB/9CA3AF?text=IMAGEN+NO+CARGADA';"/>
                     </div>
-
                     <h3 class="text-xl font-bold mb-2 text-${cardColor}">${symbol.name}</h3>
                     <p class="text-gray-500 text-sm italic">${symbol.description.substring(0, 80)}...</p>
                     <div class="mt-4 text-${cardColor} font-semibold text-right flex items-center justify-end">
@@ -287,117 +185,85 @@
             `;
         }
 
-
-        /**
-         * Inicializa la interfaz de la cuadrícula de símbolos con las dos categorías.
-         */
         function initializeGrid() {
-            gridContainer.innerHTML = ''; // Limpiar el contenedor
-            
-            // 1. Filtrar y mapear los datos para mantener el índice original
+            gridContainer.innerHTML = '';
             const dataWithIndex = symbolsData.map((s, i) => ({ ...s, originalIndex: i }));
             const simbolos = dataWithIndex.filter(s => s.type === "Simbolo");
             const atributos = dataWithIndex.filter(s => s.type === "Atributo");
 
-            // --- SECCIÓN 1: Símbolos Nacionales  ---
-            gridContainer.insertAdjacentHTML('beforeend', `
-                <h2 class="col-span-full text-3xl font-bold mt-4 mb-4 pb-2 border-b-2 border-accent-blue text-accent-blue tracking-wider">Símbolos Nacionales (Oficiales)</h2>
-            `);
-            simbolos.forEach(s => {
-                gridContainer.insertAdjacentHTML('beforeend', renderCard(s, s.originalIndex));
-            });
+            gridContainer.insertAdjacentHTML('beforeend', `<h2 class="col-span-full text-3xl font-bold mt-4 mb-4 pb-2 border-b-2 border-accent-blue text-accent-blue tracking-wider">Símbolos Nacionales (Oficiales)</h2>`);
+            simbolos.forEach(s => gridContainer.insertAdjacentHTML('beforeend', renderCard(s, s.originalIndex)));
 
-
-            // --- SECCIÓN 2: Atributos Naturales (Patrios) ---
-            gridContainer.insertAdjacentHTML('beforeend', `
-                <h2 class="col-span-full text-3xl font-bold mt-8 mb-4 pb-2 border-b-2 border-accent-red text-accent-red tracking-wider">Atributos Naturales (Patrios)</h2>
-            `);
-            atributos.forEach(a => {
-                gridContainer.insertAdjacentHTML('beforeend', renderCard(a, a.originalIndex));
-            });
-
+            gridContainer.insertAdjacentHTML('beforeend', `<h2 class="col-span-full text-3xl font-bold mt-8 mb-4 pb-2 border-b-2 border-accent-red text-accent-red tracking-wider">Atributos Naturales (Patrios)</h2>`);
+            atributos.forEach(a => gridContainer.insertAdjacentHTML('beforeend', renderCard(a, a.originalIndex)));
         }
 
-        /**
-         * Muestra el panel de detalles para un símbolo específico.
-         * @param {number} index - El índice del símbolo en symbolsData.
-         */
         function showDetail(index) {
             const symbol = symbolsData[index];
-
-            // 1. Ocultar la cuadrícula con transición de opacidad
+            
+            // MODIFICADO: Ahora el encabezado también se desvanece
+            mainHeader.classList.add('opacity-0');
             gridContainer.classList.add('opacity-0');
             
-            // Limpiar clases de animación existentes para forzar el reinicio
-            detailName.classList.remove('anim-title');
-            detailDescription.classList.remove('anim-description');
-
+            detailName.classList.remove('anim-title', 'opacity-0');
+            detailDescription.classList.remove('anim-description', 'opacity-0');
+            
             setTimeout(() => {
                 gridContainer.classList.add('hidden');
                 
-                // 2. Llenar los detalles
                 detailName.textContent = symbol.name;
                 detailDescription.textContent = symbol.description;
                 detailImage.src = symbol.image.url;
                 detailImage.alt = symbol.image.alt;
                 
-                // Determinar el color de acento del detalle
                 const accentColor = symbol.color;
-
-                // 3. Llenar los atributos con clase de animación y retraso
-                const listStartDelay = 0.5; // Retraso para que la lista empiece a animarse después de la descripción
+                const listStartDelay = 0.5;
                 detailAttributes.innerHTML = symbol.details.map((detail, i) =>
-                    // Aplicamos la clase de animación y el retraso en línea para el efecto escalonado
                     `<li class="text-gray-700 pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-${accentColor} anim-list-item" 
                           style="animation-delay: ${listStartDelay + (i * 0.15)}s;">${detail}</li>`
                 ).join('');
-
-                // 4. Aplicar estilos del color de acento al panel
+                
                 detailDescription.classList.remove('border-accent-blue', 'border-accent-red');
                 detailDescription.classList.add(`border-${accentColor}`);
-                
-                // Actualizar el color del título de atributos
                 detailAttributes.previousElementSibling.classList.remove('text-accent-blue', 'text-accent-red');
                 detailAttributes.previousElementSibling.classList.add(`text-${accentColor}`);
-
-                // 5. Mostrar el panel de detalles con animación
+                
                 detailPanel.classList.remove('hidden');
+                appContainer.style.maxHeight = (detailPanel.scrollHeight + 100) + 'px';
+
                 setTimeout(() => {
                     detailPanel.classList.remove('opacity-0');
-                    appContainer.style.height = detailPanel.scrollHeight + 50 + 'px'; // Ajustar altura del contenedor
-
-                    // 6. Aplicar las clases de animación para iniciar el efecto de texto
-                    // Se usa un pequeño timeout para asegurar que el DOM ha sido actualizado y la animación se dispara
                     setTimeout(() => {
                         detailName.classList.add('anim-title');
                         detailDescription.classList.add('anim-description');
                     }, 50);
-
-                }, 500); // Esperar que termine la transición de opacidad del grid
+                }, 50);
             }, 500); 
         }
 
-        /**
-         * Oculta el panel de detalles y muestra la cuadrícula.
-         */
         function hideDetail() {
-            // 1. Ocultar el panel de detalles con transición de opacidad
             detailPanel.classList.add('opacity-0');
-            appContainer.style.height = 'auto'; // Devolver altura a automático
+            appContainer.style.maxHeight = null; 
+            
             setTimeout(() => {
                 detailPanel.classList.add('hidden');
-                
-                // 2. Mostrar la cuadrícula
                 gridContainer.classList.remove('hidden');
+                
                 setTimeout(() => {
+                    // MODIFICADO: El encabezado reaparece junto con la cuadrícula
+                    mainHeader.classList.remove('opacity-0');
                     gridContainer.classList.remove('opacity-0');
                 }, 50);
-            }, 500); // Esperar que termine la transición de opacidad
+            }, 500);
         }
 
-        // Ejecutar la inicialización
-        initializeGrid();
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !detailPanel.classList.contains('hidden')) {
+                hideDetail();
+            }
+        });
 
+        initializeGrid();
     </script>
 </body>
 </html>
