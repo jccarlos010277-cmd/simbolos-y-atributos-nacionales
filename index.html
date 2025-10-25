@@ -65,10 +65,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.01); 
+            /* Fondo ligeramente visible para bloquear clics */
+            background-color: rgba(0, 0, 0, 0.05); 
             z-index: 10;
             display: none;
-            opacity: 1; 
+            opacity: 0; /* Opacidad inicial para transición */
             transition: opacity 0.3s ease;
         }
 
@@ -79,9 +80,12 @@
             border-top-left-radius: 24px;
             border-top-right-radius: 24px;
             border-bottom: 4px solid var(--patrio-blue);
-            transition: opacity 0.5s;
+            /* AÑADIDO: transiciones para opacidad y visibilidad */
+            transition: opacity 0.3s ease, visibility 0.3s ease; 
             background-color: var(--patrio-blue);
             color: var(--white-clean);
+            visibility: visible;
+            opacity: 1;
         }
 
         #main-header h1 {
@@ -105,7 +109,10 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 32px;
-            transition: opacity 0.5s;
+            /* AÑADIDO: transiciones para opacidad y visibilidad */
+            transition: opacity 0.3s ease, visibility 0.3s ease; 
+            visibility: visible;
+            opacity: 1;
         }
 
         .col-span-full { grid-column: 1 / -1; }
@@ -134,10 +141,11 @@
             flex-direction: column;
             justify-content: space-between;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease-in-out; /* Bounce effect */
+            /* FIX: Usar cursor: pointer y rol para mejor experiencia táctil */
+            cursor: pointer; 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease-in-out; 
             overflow: hidden;
-            opacity: 0; /* Para la animación de entrada */
+            opacity: 0; 
             transform: translateY(10px);
         }
 
@@ -166,7 +174,7 @@
         .symbol-card img {
             width: 100%;
             height: 192px; /* h-48 */
-            padding: 10px; /* Añadir padding para mejor visualización */
+            padding: 10px; 
             object-fit: contain;
             border-radius: 8px;
             border: 2px solid #e5e7eb; /* gray-100 */
@@ -509,7 +517,6 @@
 
         <header id="main-header">
             <h1 id="main-title">SÍMBOLOS Y ATRIBUTOS NACIONALES</h1>
-
         </header>
 
         <div id="symbols-grid">
@@ -611,15 +618,20 @@
 
             // 1. Mostrar el overlay y el modal y añadir clase al body para ocultar su scroll
             modalOverlay.style.display = 'block';
-            detailPanel.style.display = 'flex'; // Usamos flex para el layout de móvil
+            detailPanel.style.display = 'flex'; 
             document.body.classList.add('modal-open'); 
 
-            detailName.classList.remove('anim-title');
-            detailDescription.classList.remove('anim-description');
+            // FIX CLAVE: Ocultar el título principal y la cuadrícula antes de mostrar el modal
+            mainHeader.style.opacity = '0';
+            gridContainer.style.opacity = '0';
 
-            // 2. Ocultar la cuadrícula de forma inmediata (después de una pequeña pausa si quieres transición)
+            // Pausa para que se registre la opacidad 0
             setTimeout(() => {
+                mainHeader.style.visibility = 'hidden';
                 gridContainer.style.visibility = 'hidden'; 
+                
+                detailName.classList.remove('anim-title');
+                detailDescription.classList.remove('anim-description');
 
                 detailName.textContent = symbol.name;
                 detailDescription.textContent = symbol.description;
@@ -663,7 +675,7 @@
                     }, 100);
                 }, 50);
 
-            }, 50); // Pausa muy corta para registrar el display: block
+            }, 300); // Dar tiempo para que el fade-out de la cabecera/grid termine (0.3s)
         }
 
         function hideDetail() {
@@ -674,12 +686,20 @@
             // 2. Restaurar la visibilidad del contenido principal y quitar la clase del body
             document.body.classList.remove('modal-open'); 
 
+            // Hacemos visible el header y el grid al mismo tiempo que la animación de salida del modal.
+            mainHeader.style.visibility = 'visible';
+            gridContainer.style.visibility = 'visible';
+
             setTimeout(() => {
-                detailPanel.style.display = 'none';
-                modalOverlay.style.display = 'none';
-                gridContainer.style.visibility = 'visible';
-                
-            }, 300); // 300ms para que coincida con la transición de opacidad/transform
+                mainHeader.style.opacity = '1';
+                gridContainer.style.opacity = '1';
+
+                setTimeout(() => {
+                    detailPanel.style.display = 'none';
+                    modalOverlay.style.display = 'none';
+                }, 300); // 300ms para que coincida con la transición de opacidad/transform
+            }, 50); // Pequeña pausa antes de restaurar la opacidad
+
         }
 
         document.addEventListener('keydown', (event) => {
