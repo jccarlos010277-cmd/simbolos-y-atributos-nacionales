@@ -69,8 +69,10 @@
             background-color: rgba(0, 0, 0, 0.05); 
             z-index: 10;
             display: none;
-            opacity: 0; /* Opacidad inicial para transición */
+            opacity: 0; 
             transition: opacity 0.3s ease;
+            /* FIX CLAVE: Deshabilitar eventos de puntero cuando no está visible */
+            pointer-events: none; 
         }
 
         /* HEADER */
@@ -369,7 +371,7 @@
         /* Animación de entrada para el panel de detalles (Ahora se usa CSS Transition) */
         .detail-enter {
             opacity: 1 !important;
-            /* La transformación en desktop sigue siendo translate(-50%, -50%) scale(1) */
+            transform: translate(-50%, -50%) scale(1) !important;
         }
 
         /* Animaciones de Texto (más dramáticas) */
@@ -447,7 +449,8 @@
             #detail-panel {
                 top: 0;
                 left: 0;
-                transform: translate(0, 0) scale(1);
+                /* Eliminamos el scale(1) aquí ya que se maneja en .detail-enter para la animación */
+                transform: translate(0, 0); 
                 width: 100%;
                 height: 100vh;
                 max-width: 100%;
@@ -618,6 +621,7 @@
 
             // 1. Mostrar el overlay y el modal y añadir clase al body para ocultar su scroll
             modalOverlay.style.display = 'block';
+            modalOverlay.style.pointerEvents = 'auto'; // FIX: Habilitar el overlay para bloquear clics
             detailPanel.style.display = 'flex'; 
             document.body.classList.add('modal-open'); 
 
@@ -682,6 +686,7 @@
             // 1. Iniciar la animación de salida
             detailPanel.classList.remove('detail-enter');
             modalOverlay.style.opacity = '0';
+            modalOverlay.style.pointerEvents = 'none'; // FIX: Deshabilitar eventos de puntero
 
             // 2. Restaurar la visibilidad del contenido principal y quitar la clase del body
             document.body.classList.remove('modal-open'); 
@@ -712,6 +717,7 @@
     </script>
 </body>
 </html>
+
 
 
 
