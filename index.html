@@ -3,403 +3,578 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Símbolos y Atributos Patrios de Cuba</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Configuración de Tailwind para un tema moderno y claro -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'accent-blue': '#2196F3',  // Azul moderno (similar al flag)
-                        'accent-red': '#F44336',    // Rojo moderno (similar al flag)
-                        'primary-text': '#1F2937',
-                        'light-bg': '#F9FAFB',
-                    },
-                    boxShadow: {
-                        // Sombra sutil para un look moderno
-                        'card-shadow': '0 4px 15px rgba(0, 0, 0, 0.08)', 
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'], 
-                    },
-                }
-            }
-        }
-    </script>
-    
+    <title>Símbolos y Atributos Nacionales de Cuba</title>
+
     <style>
-        /* Estilos base para el cuerpo con fondo blanco */
+        /* Paleta de colores y fuentes para la versión Standalone */
+        :root {
+            --patrio-blue: #0033A0; /* Azul profundo */
+            --patrio-red: #CF0821;  /* Rojo intenso */
+            --primary-text: #1a1a1a;
+            --light-bg: #f5f5f5;
+            --white-clean: #ffffff;
+            --font-display: 'Montserrat', 'Arial Black', sans-serif;
+            --font-sans: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
         body {
-            background-color: white; /* Fondo blanco solicitado */
-            color: theme('colors.primary-text');
+            background-color: var(--light-bg);
+            color: var(--primary-text);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Alineación arriba para manejar el scroll global */
             min-height: 100vh;
+            padding: 2rem 1rem;
+            font-family: var(--font-sans);
+            margin: 0;
+            overflow-x: hidden; /* Asegura que no haya scroll horizontal */
         }
 
-        /* Estilo para las tarjetas interactivas */
-        .symbol-card {
-            background-color: theme('colors.light-bg');
-            border: 1px solid theme('colors.gray.100');
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            cursor: pointer;
-            box-shadow: theme('boxShadow.card-shadow');
-        }
-
-        .symbol-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
-        }
-
-        /* Estilo para el panel de detalles para un look limpio */
-        #detail-panel {
-            background-color: white;
-            border: 1px solid theme('colors.gray.200');
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        #app-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: var(--white-clean);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            z-index: 1; /* Asegura que esté por debajo del modal */
         }
         
-        /* Animación de entrada escalonada para las tarjetas */
-        @keyframes staggeredFadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* OVERLAY DEL MODAL (AHORA SOLO COMO BLOQUEADOR, SIN OPACIDAD NI BLUR) */
+        #modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* ELIMINAMOS BACKGROUND-COLOR y BACKDROP-FILTER para que no se vea oscuro */
+            background-color: rgba(255, 255, 255, 0.01); /* Fondo casi transparente, solo para capturar clics */
+            z-index: 10;
+            display: none;
+            opacity: 1; /* Mantenemos la opacidad para la transición si se usa */
+            transition: opacity 0.3s ease;
         }
 
+        /* HEADER */
+        #main-header {
+            padding: 32px;
+            text-align: center;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            border-bottom: 4px solid var(--patrio-blue);
+            transition: opacity 0.5s;
+            background-color: var(--patrio-blue);
+            color: var(--white-clean);
+        }
+
+        #main-header h1 {
+            font-size: 4rem; /* 64px */
+            font-family: var(--font-display);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            margin-bottom: 0;
+        }
+
+        #main-header p {
+            font-size: 1.25rem; /* 20px */
+            font-weight: 300;
+            opacity: 0.8;
+            margin-top: 12px;
+        }
+
+        /* GRID */
+        #symbols-grid {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            transition: opacity 0.5s;
+        }
+
+        .col-span-full { grid-column: 1 / -1; }
+
+        #symbols-grid h2 {
+            font-size: 2.25rem; /* 36px */
+            font-family: var(--font-display);
+            font-weight: 800;
+            margin-top: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 4px solid;
+            letter-spacing: 0.025em;
+        }
+        .text-patrio-red { color: var(--patrio-red); }
+        .text-patrio-blue { color: var(--patrio-blue); }
+        .border-patrio-red { border-color: var(--patrio-red); }
+        .border-patrio-blue { border-color: var(--patrio-blue); }
+
+        /* CARD STYLE */
+        .symbol-card {
+            background-color: var(--white-clean);
+            border-radius: 24px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease-in-out; /* Bounce effect */
+            overflow: hidden;
+            opacity: 0; /* Para la animación de entrada */
+            transform: translateY(10px);
+        }
+
+        .symbol-card:hover, .symbol-card:focus-visible {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            outline: 4px solid var(--patrio-blue);
+            outline-offset: 4px;
+        }
+
+        .symbol-card h3 {
+            font-size: 1.5rem;
+            font-family: var(--font-display);
+            font-weight: 900;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .symbol-card p {
+            color: #4b5563; /* gray-600 */
+            font-size: 1rem;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .symbol-card img {
+            width: 100%;
+            height: 192px; /* h-48 */
+            padding: 10px; /* Añadir padding para mejor visualización */
+            object-fit: contain;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb; /* gray-100 */
+            margin: 0 auto 16px auto;
+            transition: transform 0.5s;
+        }
+
+        .symbol-card img:hover {
+            transform: scale(1.05);
+        }
+
+        .symbol-card .details-link {
+            margin-top: 16px;
+            font-weight: 600;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 0.875rem; /* text-sm */
+            letter-spacing: 0.05em;
+        }
+
+        .symbol-card .details-link svg {
+            width: 24px;
+            height: 24px;
+            margin-left: 8px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        /*
+        * PANEL DE DETALLES (MODAL FLOTANTE - ESTRUCTURA SIN CAMBIOS)
+        */
+        #detail-panel {
+            /* Posicionamiento flotante */
+            position: fixed; /* Fijo en la ventana */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95); /* Centrado y ligeramente reducido inicialmente */
+
+            /* Dimensiones y apariencia */
+            width: 90%;
+            max-width: 900px; /* Tamaño máximo de un modal grande */
+            max-height: 90vh; /* Altura máxima para evitar scroll innecesario en la ventana principal */
+            background-color: var(--white-clean);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3); /* Sombra intensa para destacar */
+            border: 4px solid var(--patrio-blue);
+
+            /* Scroll Interno */
+            overflow-y: auto; /* Permite scroll solo dentro del modal si el contenido es demasiado largo */
+
+            /* Capa y Estado Inicial */
+            z-index: 20; /* Superior al overlay */
+            opacity: 0;
+            display: none;
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #detail-panel h2 {
+            font-size: 3rem; /* 48px */
+            font-family: var(--font-display);
+            font-weight: 800;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 4px solid var(--patrio-red);
+            color: var(--primary-text);
+        }
+
+        #detail-panel .content-wrapper {
+            display: flex;
+            gap: 40px;
+        }
+
+        #detail-panel .image-container {
+            width: 30%;
+            min-width: 200px;
+            margin-bottom: 32px;
+        }
+
+        #detail-panel .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 4px solid #e5e7eb;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            padding: 12px;
+        }
+
+        #detail-panel .text-content {
+            width: 70%;
+        }
+
+        #detail-panel p {
+            color: #4b5563;
+            margin-bottom: 32px;
+            font-style: italic;
+            line-height: 1.625;
+            font-size: 1rem;
+            border-left: 4px solid var(--patrio-blue);
+            padding-left: 24px;
+        }
+
+        #detail-panel h3 {
+            font-size: 1.5rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--patrio-red);
+        }
+
+        #detail-panel ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+            line-height: 1.5;
+        }
+
+        #detail-panel ul li {
+            color: #374151; /* gray-700 */
+            font-size: 1rem;
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        #detail-panel ul li::before {
+            content: '\273F'; /* Star symbol */
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: var(--bullet-color, var(--patrio-blue)); /* Usa la variable dinámica */
+        }
+
+        /* BACK BUTTON */
+        #detail-panel button {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            color: var(--patrio-blue);
+            font-size: 2rem;
+            font-weight: bold;
+            transition: color 0.3s, background 0.3s, transform 0.3s;
+            border: none;
+            background: var(--white-clean);
+            border-radius: 9999px;
+            padding: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 30;
+        }
+
+        #detail-panel button:hover {
+            color: var(--patrio-red);
+            background: var(--light-bg);
+            transform: scale(1.1);
+        }
+
+        #detail-panel button svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* --- TRANSICIONES EXPLOSIVAS (Puro CSS) --- */
+
+        /* Animación de entrada para la cuadrícula */
+        @keyframes fadeInScaleUp {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
         .fade-in-staggered {
-            animation: staggeredFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0; /* Asegurar que estén ocultas al inicio */
+            animation: fadeInScaleUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
-        /* --- Animaciones de Texto para el Panel de Detalles --- */
-
-        /* 1. Animación del Título (Slide Down) */
-        @keyframes fadeInSlideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .anim-title {
-            animation: fadeInSlideDown 0.6s ease-out forwards;
+        /* Animación de entrada para el panel de detalles (Ahora se usa CSS Transition) */
+        .detail-enter {
+            opacity: 1 !important;
+            transform: translate(-50%, -50%) scale(1) !important;
         }
 
-        /* 2. Animación de la Descripción (Fade and Scale) */
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
+        /* Animaciones de Texto (más dramáticas) */
+        @keyframes titleExplode {
+            from { opacity: 0; transform: translateY(-20px) scale(0.8); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .anim-description {
-            animation: fadeInScale 0.7s ease-out forwards;
-            animation-delay: 0.2s; /* Inicia después del título */
-        }
+        .anim-title { animation: titleExplode 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; } /* Con bounce */
 
-        /* 3. Animación de los Ítems de la Lista (Staggered Slide Left) */
-        @keyframes staggeredListFade {
-            from { opacity: 0; transform: translateX(-10px); }
+        @keyframes descriptionSlideIn {
+            from { opacity: 0; transform: translateX(-30px); }
             to { opacity: 1; transform: translateX(0); }
         }
+        .anim-description {
+            animation: descriptionSlideIn 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes listExplode {
+            from { opacity: 0; transform: translateX(-15px) rotateX(-90deg); }
+            to { opacity: 1; transform: translateX(0) rotateX(0deg); }
+        }
         .anim-list-item {
-            animation: staggeredListFade 0.4s ease-out forwards;
-            opacity: 0; /* Inicialmente oculto, el JS manejará el delay */
+            animation: listExplode 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform-origin: top left;
+        }
+
+        /* MEDIA QUERIES para responsividad (simulando Tailwind) */
+        @media (max-width: 900px) {
+            #detail-panel {
+                width: 95%;
+            }
+        }
+        @media (max-width: 768px) {
+            #detail-panel .content-wrapper {
+                flex-direction: column;
+            }
+            #detail-panel .image-container, #detail-panel .text-content {
+                width: 100%;
+            }
+            #main-header h1 {
+                font-size: 3rem;
+            }
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
+    
+    <!-- OVERLAY SIN EFECTO VISUAL, SOLO BLOQUEA CLICS DETRÁS -->
+    <div id="modal-overlay" onclick="hideDetail()"></div>
+    
+    <div id="app-container">
 
-    <div id="app-container" class="w-full max-w-5xl bg-white shadow-xl rounded-2xl transform transition duration-500 ease-in-out">
-        
-        <!-- Encabezado con estética moderna -->
-        <header class="p-6 text-center rounded-t-2xl border-b border-gray-200">
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-primary-text">
-                Símbolos y Atributos Patrios de Cuba
-            </h1>
-            <p class="mt-2 text-lg font-light text-gray-500">Explora la identidad y herencia nacional</p>
+        <header id="main-header">
+            <h1 id="main-title">SÍMBOLOS Y ATRIBUTOS NACIONALES</h1>
+
         </header>
 
-        <!-- Contenedor Principal (Grid de Símbolos) -->
-        <!-- La cuadrícula ahora contiene elementos con col-span-full para los títulos de sección -->
-        <div id="symbols-grid" class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity duration-500">
-            <!-- Las tarjetas y los títulos se generarán aquí -->
+        <div id="symbols-grid">
+            <!-- Las tarjetas se generan aquí -->
         </div>
 
-        <!-- Panel de Detalles (Inicialmente oculto) -->
-        <div id="detail-panel" class="p-8 absolute inset-0 rounded-2xl hidden opacity-0 transition-opacity duration-500 z-10">
-            <button onclick="hideDetail()" class="absolute top-4 right-4 text-gray-600 text-3xl font-bold hover:text-accent-red transition duration-200 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <!-- PANEL DE DETALLES (MODAL FLOTANTE) -->
+        <div id="detail-panel">
+            <button onclick="hideDetail()" aria-label="Volver a la lista de símbolos">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
             </button>
-            <h2 id="detail-name" class="text-4xl font-extrabold mb-4 border-b pb-2 border-gray-200 text-primary-text"></h2>
-            <div class="md:flex md:space-x-8">
-                <div class="md:w-1/3 mb-6 md:mb-0">
-                    <div class="image-container rounded-lg border-4 border-gray-100 overflow-hidden shadow-lg">
-                        <img id="detail-image" src="" alt="" class="w-full h-full object-contain p-2" />
-                    </div>
+            <h2 id="detail-name"></h2>
+            <div class="content-wrapper">
+                <div class="image-container">
+                    <img id="detail-image" src="" alt="" />
                 </div>
-                <div class="md:w-2/3">
-                    <p id="detail-description" class="text-gray-600 mb-6 italic leading-relaxed border-l-4 border-accent-blue pl-4"></p>
-                    <h3 class="text-xl font-semibold mb-3 text-accent-blue">ATRIBUTOS CLAVE:</h3>
-                    <ul id="detail-attributes" class="space-y-3">
-                        <!-- Detalles de atributos -->
-                    </ul>
+                <div class="text-content">
+                    <p id="detail-description"></p>
+                    <h3 id="detail-attributes-title">CLAVES DE SU SIGNIFICADO:</h3>
+                    <ul id="detail-attributes"></ul>
                 </div>
             </div>
         </div>
-        
+
     </div>
 
     <script>
-        // Definición de los símbolos nacionales, sus atributos y URLs de imágenes
+        // DATOS ORIGINALES (CON IMÁGENES RESTAURADAS)
         const symbolsData = [
-            {
-                name: "Bandera Nacional",
-                type: "Simbolo", // Nuevo campo para diferenciar
-                description: "Símbolo de la unidad, la libertad y la soberanía. Creada en 1849. Sus patrones cromáticos reflejan los ideales y la lucha por la soberanía total.",
-                details: [
-                    "Tres franjas azules: Representan los tres departamentos militares de la isla.",
-                    "Dos franjas blancas: Simbolizan la fuerza de los ideales virtuosos y la paz.",
-                    "Triángulo rojo: Evoca la sangre vertida en el conflicto de liberación y el valor.",
-                    "Estrella Solitaria: Emblema de la absoluta libertad e independencia."
-                ],
-                color: 'accent-red',
-                image: { 
-                    url: "https://i.postimg.cc/QtBSkhRd/Bandera-cubana-aislada-Foto-Premium.jpg", 
-                    alt: "Bandera Nacional de Cuba" 
-                }
-            },
-            {
-                name: "Escudo de la Palma Real",
-                type: "Simbolo", // Nuevo campo para diferenciar
-                description: "Emblema de la República, adoptado en 1906. Su estructura cifrada mapea la geografía estratégica y la riqueza biológica de la isla.",
-                details: [
-                    "Llave de oro: Representa a Cuba como el punto de control estratégico del Golfo de México.",
-                    "Franjas: Referencia visual a la configuración de la bandera nacional.",
-                    "Palma Real: El árbol nacional, símbolo de nobleza, fortaleza y resistencia.",
-                    "Gorro Frigio: Símbolo global de la emancipación y la autonomía."
-                ],
-                color: 'accent-blue',
-                image: { 
-                    url: "https://i.postimg.cc/3Ry9CYPR/Coat-of-Arms-of-Cuba.jpg", 
-                    alt: "Escudo de la Palma Real de Cuba" 
-                }
-            },
-            {
-                name: "Himno de Bayamo",
-                type: "Simbolo", // Nuevo campo para diferenciar
-                description: "La Bayamesa, compuesto por Pedro Figueredo (Perucho) en 1868. Es un llamado a la lucha y al honor patrio, entonado por primera vez durante la toma de Bayamo.",
-                details: [
-                    "Nombre clave: La Bayamesa.",
-                    "Secuencia de texto: Canto de heroísmo y llamado a la acción sacrificial.",
-                    "Función: Módulo de motivación para la resistencia y la gloria póstuma."
-                ],
-                color: 'accent-red',
-                image: { 
-                    url: "https://i.postimg.cc/GmcQgkW1/himno-nacional.jpg", 
-                    alt: "Partitura del Himno de Bayamo" 
-                }
-            },
-            {
-                name: "Flor Nacional (La Mariposa)",
-                type: "Atributo", // Nuevo campo para diferenciar
-                description: "Jazmín de mariposa (Hedychium coronarium). Símbolo de la pureza, el desafío a la opresión y el secretismo de la independencia.",
-                details: [
-                    "Cromática: Blanca, asociada al concepto de paz y pureza.",
-                    "Uso Histórico: Utilizado como canal de comunicación encubierta por la resistencia mambisa.",
-                    "Atributo Sensorial: Emite una señal aromática intensa y exquisita."
-                ],
-                color: 'accent-blue',
-                image: { 
-                    url: "https://i.postimg.cc/kgncYx0m/flor-mariposa.jpg", 
-                    alt: "Flor de Mariposa (Jazmín)" 
-                }
-            },
-            {
-                name: "Árbol Nacional (Palma Real)",
-                type: "Atributo", // Nuevo campo para diferenciar
-                description: "Roystonea regia. Árbol que simboliza la perenne vitalidad, nobleza y la alta arquitectura de la isla.",
-                details: [
-                    "Distribución: Mapeado en casi todos los sectores del territorio.",
-                    "Metadata: Su altura y resistencia codifican la fortaleza del espíritu nacional.",
-                    "Integración: Única unidad biológica incrustada en el Escudo de la República."
-                ],
-                color: 'accent-red',
-                image: { 
-                    url: "https://i.postimg.cc/XYQgRrWS/palma-real1.jpg", 
-                    alt: "Palma Real Cubana" 
-                }
-            },
-            {
-                name: "Ave Nacional (El Tocororo)",
-                type: "Atributo", // Nuevo campo para diferenciar
-                description: "Trogón Cubano (Priotelus temnurus). Ave nacional, reflejando el cromatismo de la bandera y el valor innegociable de la libertad.",
-                details: [
-                    "Cromática Reflectiva: Patrón de Rojo, Blanco y Azul (coincidencia de la matriz nacional).",
-                    "Behavioral Lock: No sobrevive en cautiverio; simboliza el rechazo absoluto a la restricción.",
-                    "Endemismo: Geográficamente restringido a Cuba, reforzando la singularidad de la matriz de identidad."
-                ],
-                color: 'accent-blue',
-                image: { 
-                    url: "https://i.postimg.cc/76CXMwpf/El-tocororo.jpg", 
-                    alt: "Tocororo (Ave Nacional de Cuba)" 
-                }
-            }
+            { name: "Bandera Nacional", type: "Simbolo", description: "Símbolo de la unidad, la libertad y la soberanía. Creada en 1849. Sus patrones cromáticos reflejan los ideales y la lucha por la soberanía total.", details: ["Tres franjas azules: Representan los tres departamentos militares de la isla.", "Dos franjas blancas: Simbolizan la fuerza de los ideales virtuosos y la paz.", "Triángulo rojo: Evoca la sangre vertida en el conflicto de liberación y el valor.", "Estrella Solitaria: Emblema de la absoluta libertad e independencia."], color: 'patrio-red', image: { url: "https://i.postimg.cc/QtBSkhRd/Bandera-cubana-aislada-Foto-Premium.jpg", alt: "Bandera Nacional de Cuba" } },
+            { name: "Escudo de la Palma Real", type: "Simbolo", description: "Emblema de la República, adoptado en 1906. Su estructura cifrada mapea la geografía estratégica y la riqueza biológica de la isla.", details: ["Llave de oro: Representa a Cuba como el punto de control estratégico del Golfo de México.", "Franjas: Referencia visual a la configuración de la bandera nacional.", "Palma Real: El árbol nacional, símbolo de nobleza, fortaleza y resistencia.", "Gorro Frigio: Símbolo global de la emancipación y la autonomía."], color: 'patrio-blue', image: { url: "https://i.postimg.cc/3Ry9CYPR/Coat-of-Arms-of-Cuba.jpg", alt: "Escudo de la Palma Real de Cuba" } },
+            { name: "Himno de Bayamo", type: "Simbolo", description: "La Bayamesa, compuesto por Pedro Figueredo (Perucho) en 1868. Es un llamado a la lucha y al honor patrio, entonado por primera vez durante la toma de Bayamo.", details: ["Nombre clave: La Bayamesa.", "Secuencia de texto: Canto de heroísmo y llamado a la acción sacrificial.", "Función: Módulo de motivación para la resistencia y la gloria póstuma."], color: 'patrio-red', image: { url: "https://i.postimg.cc/GmcQgkW1/himno-nacional.jpg", alt: "Partitura del Himno de Bayamo" } },
+            { name: "Flor Nacional (La Mariposa)", type: "Atributo", description: "Jazmín de mariposa (Hedychium coronarium). Símbolo de la pureza, el desafío a la opresión y el secretismo de la independencia.", details: ["Cromática: Blanca, asociada al concepto de paz y pureza.", "Uso Histórico: Utilizado como canal de comunicación encubierta por la resistencia mambisa.", "Atributo Sensorial: Emite una señal aromática intensa y exquisita."], color: 'patrio-blue', image: { url: "https://i.postimg.cc/kgncYx0m/flor-mariposa.jpg", alt: "Flor de Mariposa (Jazmín)" } },
+            { name: "Árbol Nacional (Palma Real)", type: "Atributo", description: "Roystonea regia. Árbol que simboliza la perenne vitalidad, nobleza y la alta arquitectura de la isla.", details: ["Distribución: Mapeado en casi todos los sectores del territorio.", "Metadata: Su altura y resistencia codifican la fortaleza del espíritu nacional.", "Integración: Única unidad biológica incrustada en el Escudo de la República."], color: 'patrio-red', image: { url: "https://i.postimg.cc/XYQgRrWS/palma-real1.jpg", alt: "Palma Real Cubana" } },
+            { name: "Ave Nacional (El Tocororo)", type: "Atributo", description: "Trogón Cubano (Priotelus temnurus). Ave nacional, reflejando el cromatismo de la bandera y el valor innegociable de la libertad.", details: ["Cromática Reflectiva: Patrón de Rojo, Blanco y Azul (coincidencia de la matriz nacional).", "Behavioral Lock: No sobrevive en cautiverio; simboliza el rechazo absoluto a la restricción.", "Endemismo: Geográficamente restringido a Cuba, reforzando la singularidad de la matriz de identidad."], color: 'patrio-blue', image: { url: "https://i.postimg.cc/76CXMwpf/El-tocororo.jpg", alt: "Tocororo (Ave Nacional de Cuba)" } }
         ];
 
-        // Referencias a los elementos DOM
+        const mainHeader = document.getElementById('main-header');
         const appContainer = document.getElementById('app-container');
         const gridContainer = document.getElementById('symbols-grid');
         const detailPanel = document.getElementById('detail-panel');
+        const modalOverlay = document.getElementById('modal-overlay');
         const detailName = document.getElementById('detail-name');
         const detailDescription = document.getElementById('detail-description');
         const detailImage = document.getElementById('detail-image');
         const detailAttributes = document.getElementById('detail-attributes');
+        const detailAttributesTitle = document.getElementById('detail-attributes-title');
 
-        /**
-         * Función auxiliar para renderizar una tarjeta de símbolo/atributo.
-         * @param {Object} symbol - El objeto de datos del símbolo.
-         * @param {number} originalIndex - El índice original en el array symbolsData.
-         * @returns {string} El HTML de la tarjeta.
-         */
         function renderCard(symbol, originalIndex) {
             const cardColor = symbol.color;
-            
+            const textColorClass = `color: var(--${cardColor});`;
+            const linkColorClass = `color: var(--${cardColor});`;
+
             return `
-                <div class="symbol-card p-6 rounded-xl transform transition-all duration-500 fade-in-staggered" 
+                <div class="symbol-card"
                         onclick="showDetail(${originalIndex})"
+                        onkeydown="if(event.key === 'Enter') showDetail(${originalIndex})"
+                        role="button"
+                        tabindex="0"
                         style="animation-delay: ${originalIndex * 0.1}s;">
-                    
-                    <div class="mb-4 text-center">
-                        <img src="${symbol.image.url}" 
-                                alt="${symbol.image.alt}" 
-                                class="w-full h-auto max-h-56 object-contain rounded-md border-2 border-gray-200 mx-auto"
-                                onerror="this.onerror=null; this.src='https://placehold.co/200x100/F9FAFB/9CA3AF?text=IMAGEN+NO+CARGADA';"
-                        />
+
+                    <div class="text-center">
+                        <img src="${symbol.image.url}" alt="${symbol.image.alt}" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22200%22%20viewBox%3D%220%200%20300%20200%22%3E%3Crect%20width%3D%22300%22%20height%3D%22200%22%20fill%3D%22%23f5f5f5%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20fill%3D%22%231a1a1a%22%3EIMAGEN%20NO%20CARGADA%3C%2Ftext%3E%3C%2Fsvg%3E';"/>
                     </div>
 
-                    <h3 class="text-xl font-bold mb-2 text-${cardColor}">${symbol.name}</h3>
-                    <p class="text-gray-500 text-sm italic">${symbol.description.substring(0, 80)}...</p>
-                    <div class="mt-4 text-${cardColor} font-semibold text-right flex items-center justify-end">
-                        Ver Detalles
-                        <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    <h3 style="${textColorClass}">${symbol.name}</h3>
+                    <p>${symbol.description.substring(0, 100)}...</p>
+
+                    <div class="details-link" style="${linkColorClass}">
+                        <span>VER DETALLES</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13 9l3 3m0 0l-3 3m3-3H8M1 12h22"></path></svg>
                     </div>
                 </div>
             `;
         }
 
-
-        /**
-         * Inicializa la interfaz de la cuadrícula de símbolos con las dos categorías.
-         */
         function initializeGrid() {
-            gridContainer.innerHTML = ''; // Limpiar el contenedor
-            
-            // 1. Filtrar y mapear los datos para mantener el índice original
+            gridContainer.innerHTML = '';
             const dataWithIndex = symbolsData.map((s, i) => ({ ...s, originalIndex: i }));
             const simbolos = dataWithIndex.filter(s => s.type === "Simbolo");
             const atributos = dataWithIndex.filter(s => s.type === "Atributo");
 
-            // --- SECCIÓN 1: Símbolos Nacionales  ---
-            gridContainer.insertAdjacentHTML('beforeend', `
-                <h2 class="col-span-full text-3xl font-bold mt-4 mb-4 pb-2 border-b-2 border-accent-blue text-accent-blue tracking-wider">Símbolos Nacionales (Oficiales)</h2>
-            `);
-            simbolos.forEach(s => {
-                gridContainer.insertAdjacentHTML('beforeend', renderCard(s, s.originalIndex));
+            gridContainer.insertAdjacentHTML('beforeend', `<h2 class="col-span-full border-patrio-red text-patrio-red">SÍMBOLOS NACIONALES</h2>`);
+            simbolos.forEach(s => gridContainer.insertAdjacentHTML('beforeend', renderCard(s, s.originalIndex)));
+
+            gridContainer.insertAdjacentHTML('beforeend', `<h2 class="col-span-full border-patrio-blue text-patrio-blue" style="margin-top: 48px;">ATRIBUTOS NATURALES </h2>`);
+            atributos.forEach(a => gridContainer.insertAdjacentHTML('beforeend', renderCard(a, a.originalIndex)));
+
+            // Iniciar la animación de entrada de las tarjetas
+            document.querySelectorAll('.symbol-card').forEach(card => {
+                card.classList.add('fade-in-staggered');
             });
-
-
-            // --- SECCIÓN 2: Atributos Naturales (Patrios) ---
-            gridContainer.insertAdjacentHTML('beforeend', `
-                <h2 class="col-span-full text-3xl font-bold mt-8 mb-4 pb-2 border-b-2 border-accent-red text-accent-red tracking-wider">Atributos Naturales (Patrios)</h2>
-            `);
-            atributos.forEach(a => {
-                gridContainer.insertAdjacentHTML('beforeend', renderCard(a, a.originalIndex));
-            });
-
         }
 
-        /**
-         * Muestra el panel de detalles para un símbolo específico.
-         * @param {number} index - El índice del símbolo en symbolsData.
-         */
         function showDetail(index) {
             const symbol = symbolsData[index];
 
-            // 1. Ocultar la cuadrícula con transición de opacidad
-            gridContainer.classList.add('opacity-0');
-            
-            // Limpiar clases de animación existentes para forzar el reinicio
+            // 1. Mostrar el overlay y el modal
+            modalOverlay.style.display = 'block';
+            detailPanel.style.display = 'block';
+            // Mantenemos el overflow hidden para evitar el scroll del body
+            document.body.style.overflow = 'hidden'; 
+
             detailName.classList.remove('anim-title');
             detailDescription.classList.remove('anim-description');
 
+            // 2. Transiciones de opacidad para el contenido principal (Ahora solo lo ocultamos)
+            // Ya no cambiamos la opacidad de los contenedores para evitar el efecto de atenuación
+            mainHeader.style.opacity = '1'; 
+            gridContainer.style.opacity = '1';
+
+            // Ocultamos la cuadrícula de forma inmediata (después de una pequeña pausa si quieres transición)
             setTimeout(() => {
-                gridContainer.classList.add('hidden');
-                
-                // 2. Llenar los detalles
+                gridContainer.style.visibility = 'hidden'; 
+
                 detailName.textContent = symbol.name;
                 detailDescription.textContent = symbol.description;
                 detailImage.src = symbol.image.url;
                 detailImage.alt = symbol.image.alt;
-                
-                // Determinar el color de acento del detalle
-                const accentColor = symbol.color;
 
-                // 3. Llenar los atributos con clase de animación y retraso
-                const listStartDelay = 0.5; // Retraso para que la lista empiece a animarse después de la descripción
+                const accentColor = symbol.color;
+                const listStartDelay = 0.3;
+
                 detailAttributes.innerHTML = symbol.details.map((detail, i) =>
-                    // Aplicamos la clase de animación y el retraso en línea para el efecto escalonado
-                    `<li class="text-gray-700 pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-${accentColor} anim-list-item" 
-                          style="animation-delay: ${listStartDelay + (i * 0.15)}s;">${detail}</li>`
+                    `<li class="anim-list-item" style="animation-delay: ${listStartDelay + (i * 0.1)}s;">${detail}</li>`
                 ).join('');
 
-                // 4. Aplicar estilos del color de acento al panel
-                detailDescription.classList.remove('border-accent-blue', 'border-accent-red');
-                detailDescription.classList.add(`border-${accentColor}`);
-                
-                // Actualizar el color del título de atributos
-                detailAttributes.previousElementSibling.classList.remove('text-accent-blue', 'text-accent-red');
-                detailAttributes.previousElementSibling.classList.add(`text-${accentColor}`);
+                // Ajuste de colores dinámicos
+                detailPanel.querySelector('p').style.borderColor = `var(--${accentColor})`;
+                detailName.style.borderColor = `var(--${accentColor === 'patrio-blue' ? 'patrio-red' : 'patrio-blue'})`;
+                detailAttributesTitle.style.color = `var(--${accentColor})`;
+                detailPanel.style.borderColor = `var(--${accentColor})`;
+                detailPanel.querySelector('button').style.color = `var(--${accentColor})`;
 
-                // 5. Mostrar el panel de detalles con animación
-                detailPanel.classList.remove('hidden');
+                // Ajuste de color del bullet point
+                detailAttributes.querySelectorAll('li').forEach(li => {
+                    li.style.setProperty('--bullet-color', `var(--${accentColor === 'patrio-blue' ? 'patrio-red' : 'patrio-blue'})`);
+                    li.style.color = 'var(--primary-text)';
+                });
+
+                // 3. Aplicar clase de animación de entrada al modal y overlay
                 setTimeout(() => {
-                    detailPanel.classList.remove('opacity-0');
-                    appContainer.style.height = detailPanel.scrollHeight + 50 + 'px'; // Ajustar altura del contenedor
+                    modalOverlay.style.opacity = '1';
+                    detailPanel.classList.add('detail-enter');
 
-                    // 6. Aplicar las clases de animación para iniciar el efecto de texto
-                    // Se usa un pequeño timeout para asegurar que el DOM ha sido actualizado y la animación se dispara
                     setTimeout(() => {
                         detailName.classList.add('anim-title');
                         detailDescription.classList.add('anim-description');
-                    }, 50);
-
-                }, 500); // Esperar que termine la transición de opacidad del grid
-            }, 500); 
-        }
-
-        /**
-         * Oculta el panel de detalles y muestra la cuadrícula.
-         */
-        function hideDetail() {
-            // 1. Ocultar el panel de detalles con transición de opacidad
-            detailPanel.classList.add('opacity-0');
-            appContainer.style.height = 'auto'; // Devolver altura a automático
-            setTimeout(() => {
-                detailPanel.classList.add('hidden');
-                
-                // 2. Mostrar la cuadrícula
-                gridContainer.classList.remove('hidden');
-                setTimeout(() => {
-                    gridContainer.classList.remove('opacity-0');
+                    }, 100);
                 }, 50);
-            }, 500); // Esperar que termine la transición de opacidad
+
+            }, 50); // Pausa muy corta para registrar el display: block
         }
 
-        // Ejecutar la inicialización
-        initializeGrid();
+        function hideDetail() {
+            // 1. Iniciar la animación de salida
+            detailPanel.classList.remove('detail-enter');
+            modalOverlay.style.opacity = '0';
 
+            // 2. Restaurar la visibilidad del contenido principal
+            document.body.style.overflow = ''; // Restaurar el scroll del body
+
+            setTimeout(() => {
+                detailPanel.style.display = 'none';
+                modalOverlay.style.display = 'none';
+                gridContainer.style.visibility = 'visible';
+                
+                // Ya no necesitamos restaurar la opacidad porque no la atenuamos
+            }, 300); // 300ms para que coincida con la transición de opacidad/transform
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && detailPanel.style.display !== 'none') {
+                hideDetail();
+            }
+        });
+
+        initializeGrid();
     </script>
 </body>
 </html>
+
 
 
