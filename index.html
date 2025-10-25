@@ -47,11 +47,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* ELIMINAMOS BACKGROUND-COLOR y BACKDROP-FILTER para que no se vea oscuro */
-            background-color: rgba(255, 255, 255, 0.01); /* Fondo casi transparente, solo para capturar clics */
+            /* Fondo casi transparente, solo para capturar clics */
+            background-color: rgba(255, 255, 255, 0.01); 
             z-index: 10;
             display: none;
-            opacity: 1; /* Mantenemos la opacidad para la transición si se usa */
+            opacity: 1; 
             transition: opacity 0.3s ease;
         }
 
@@ -86,7 +86,8 @@
         #symbols-grid {
             padding: 30px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* Ajustado para que el min sea 280px, mejor para móviles en vista horizontal */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 32px;
             transition: opacity 0.5s;
         }
@@ -182,30 +183,30 @@
         }
 
         /*
-        * PANEL DE DETALLES (MODAL FLOTANTE - ESTRUCTURA SIN CAMBIOS)
+        * PANEL DE DETALLES (MODAL FLOTANTE)
         */
         #detail-panel {
             /* Posicionamiento flotante */
-            position: fixed; /* Fijo en la ventana */
+            position: fixed; 
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.95); /* Centrado y ligeramente reducido inicialmente */
+            transform: translate(-50%, -50%) scale(0.95); 
 
-            /* Dimensiones y apariencia */
+            /* Dimensiones y apariencia (Default para Desktop/Tablet) */
             width: 90%;
-            max-width: 900px; /* Tamaño máximo de un modal grande */
-            max-height: 90vh; /* Altura máxima para evitar scroll innecesario en la ventana principal */
+            max-width: 900px; 
+            max-height: 90vh; 
             background-color: var(--white-clean);
             border-radius: 24px;
             padding: 30px;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3); /* Sombra intensa para destacar */
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3); 
             border: 4px solid var(--patrio-blue);
 
             /* Scroll Interno */
-            overflow-y: auto; /* Permite scroll solo dentro del modal si el contenido es demasiado largo */
+            overflow-y: auto; 
 
             /* Capa y Estado Inicial */
-            z-index: 20; /* Superior al overlay */
+            z-index: 20; 
             opacity: 0;
             display: none;
             transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -363,12 +364,24 @@
             transform-origin: top left;
         }
 
-        /* MEDIA QUERIES para responsividad (simulando Tailwind) */
+        /* ------------------------------------------------ */
+        /* MEDIA QUERIES PARA RESPONSIVIDAD */
+        /* ------------------------------------------------ */
+
+        /* Tablet (max-width: 900px) */
         @media (max-width: 900px) {
+            #app-container {
+                padding: 1rem;
+            }
+            #symbols-grid {
+                padding: 20px;
+            }
             #detail-panel {
                 width: 95%;
             }
         }
+
+        /* Móvil (max-width: 768px - ya existía) */
         @media (max-width: 768px) {
             #detail-panel .content-wrapper {
                 flex-direction: column;
@@ -378,6 +391,64 @@
             }
             #main-header h1 {
                 font-size: 3rem;
+            }
+            #symbols-grid h2 {
+                font-size: 1.75rem; /* Reducción de tamaño de títulos de sección */
+            }
+        }
+
+        /* Móvil Pequeño (max-width: 640px - Optimización para pantallas pequeñas) */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem 0; /* Menos padding lateral para aprovechar el espacio */
+            }
+            #main-header {
+                padding: 20px 10px;
+            }
+            #main-header h1 {
+                font-size: 2rem; /* Título más pequeño */
+            }
+
+            /* Hacemos que el modal de detalles sea casi pantalla completa */
+            #detail-panel {
+                top: 0;
+                left: 0;
+                transform: translate(0, 0) scale(1); /* Elimina el centrado y la reducción */
+                width: 100%;
+                height: 100vh;
+                max-width: 100%;
+                max-height: 100vh;
+                border-radius: 0; /* Ocupa toda la pantalla */
+                padding: 20px 15px; /* Padding interno reducido */
+                border: none;
+                box-shadow: none;
+            }
+            
+            /* Ajuste de la animación para pantalla completa */
+            .detail-enter {
+                transform: translate(0, 0) scale(1) !important;
+            }
+            
+            #detail-panel h2 {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+            
+            #detail-panel .image-container {
+                min-width: unset;
+                margin-bottom: 20px;
+            }
+
+            #detail-panel button {
+                top: 15px;
+                right: 15px;
+                padding: 4px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+            
+            #detail-panel button svg {
+                width: 30px;
+                height: 30px;
             }
         }
     </style>
