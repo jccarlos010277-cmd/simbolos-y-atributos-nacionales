@@ -29,6 +29,24 @@
             margin: 0;
             overflow-x: hidden; /* Asegura que no haya scroll horizontal */
         }
+        
+        /* FIX GLOBAL: Ocultar la barra de desplazamiento en el BODY cuando está en 'overflow: hidden' */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Ocultar barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        /* Ocultar barra de desplazamiento en Firefox */
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
 
         #app-container {
             width: 100%;
@@ -40,14 +58,13 @@
             z-index: 1; /* Asegura que esté por debajo del modal */
         }
         
-        /* OVERLAY DEL MODAL (AHORA SOLO COMO BLOQUEADOR, SIN OPACIDAD NI BLUR) */
+        /* OVERLAY DEL MODAL */
         #modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* Fondo casi transparente, solo para capturar clics */
             background-color: rgba(255, 255, 255, 0.01); 
             z-index: 10;
             display: none;
@@ -86,7 +103,6 @@
         #symbols-grid {
             padding: 30px;
             display: grid;
-            /* Ajustado para que el min sea 280px, mejor para móviles en vista horizontal */
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 32px;
             transition: opacity 0.5s;
@@ -202,7 +218,7 @@
             box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3); 
             border: 4px solid var(--patrio-blue);
 
-            /* Scroll Interno */
+            /* Scroll Interno (Desktop/Tablet) */
             overflow-y: auto; 
 
             /* Capa y Estado Inicial */
@@ -211,6 +227,16 @@
             display: none;
             transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        
+        /* Ocultar barra de desplazamiento en Desktop/Tablet (sin media query) */
+        #detail-panel {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        #detail-panel::-webkit-scrollbar {
+            display: none;
+        }
+
 
         #detail-panel h2 {
             font-size: 3rem; /* 48px */
@@ -335,7 +361,7 @@
         /* Animación de entrada para el panel de detalles (Ahora se usa CSS Transition) */
         .detail-enter {
             opacity: 1 !important;
-            transform: translate(-50%, -50%) scale(1) !important;
+            /* La transformación en desktop sigue siendo translate(-50%, -50%) scale(1) */
         }
 
         /* Animaciones de Texto (más dramáticas) */
@@ -409,19 +435,23 @@
                 font-size: 2rem; /* Título más pequeño */
             }
 
-            /* Hacemos que el modal de detalles sea casi pantalla completa */
+            /* FIX: Hacemos que el modal de detalles sea pantalla completa con estructura flexible */
             #detail-panel {
                 top: 0;
                 left: 0;
-                transform: translate(0, 0) scale(1); /* Elimina el centrado y la reducción */
+                transform: translate(0, 0) scale(1);
                 width: 100%;
                 height: 100vh;
                 max-width: 100%;
                 max-height: 100vh;
-                border-radius: 0; /* Ocupa toda la pantalla */
-                padding: 20px 15px; /* Padding interno reducido */
+                border-radius: 0; 
+                padding: 20px 15px; 
                 border: none;
                 box-shadow: none;
+                
+                display: flex;
+                flex-direction: column;
+                overflow-y: hidden; /* IMPORTANTE: El padre ya no se desplaza */
             }
             
             /* Ajuste de la animación para pantalla completa */
@@ -432,6 +462,7 @@
             #detail-panel h2 {
                 font-size: 2rem;
                 margin-bottom: 15px;
+                flex-shrink: 0;
             }
             
             #detail-panel .image-container {
@@ -444,11 +475,27 @@
                 right: 15px;
                 padding: 4px;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                flex-shrink: 0;
             }
             
             #detail-panel button svg {
                 width: 30px;
                 height: 30px;
+            }
+
+            /* FIX CLAVE: El contenido restante debe crecer y ser el contenedor de scroll (pero con barra oculta) */
+            #detail-panel .content-wrapper {
+                flex-grow: 1; /* Ocupa todo el espacio vertical restante */
+                overflow-y: auto; /* Permite el desplazamiento interno */
+                -webkit-overflow-scrolling: touch; /* Mejora el scroll en iOS */
+                padding-top: 10px;
+                
+                /* Ocultar scrollbar solo para este contenedor en móvil */
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
+            }
+            #detail-panel .content-wrapper::-webkit-scrollbar {
+                display: none;
             }
         }
     </style>
@@ -562,21 +609,15 @@
         function showDetail(index) {
             const symbol = symbolsData[index];
 
-            // 1. Mostrar el overlay y el modal
+            // 1. Mostrar el overlay y el modal y añadir clase al body para ocultar su scroll
             modalOverlay.style.display = 'block';
-            detailPanel.style.display = 'block';
-            // Mantenemos el overflow hidden para evitar el scroll del body
-            document.body.style.overflow = 'hidden'; 
+            detailPanel.style.display = 'flex'; // Usamos flex para el layout de móvil
+            document.body.classList.add('modal-open'); 
 
             detailName.classList.remove('anim-title');
             detailDescription.classList.remove('anim-description');
 
-            // 2. Transiciones de opacidad para el contenido principal (Ahora solo lo ocultamos)
-            // Ya no cambiamos la opacidad de los contenedores para evitar el efecto de atenuación
-            mainHeader.style.opacity = '1'; 
-            gridContainer.style.opacity = '1';
-
-            // Ocultamos la cuadrícula de forma inmediata (después de una pequeña pausa si quieres transición)
+            // 2. Ocultar la cuadrícula de forma inmediata (después de una pequeña pausa si quieres transición)
             setTimeout(() => {
                 gridContainer.style.visibility = 'hidden'; 
 
@@ -584,6 +625,12 @@
                 detailDescription.textContent = symbol.description;
                 detailImage.src = symbol.image.url;
                 detailImage.alt = symbol.image.alt;
+                
+                // Aseguramos que el scroll inicie arriba al abrir el modal
+                const contentWrapper = detailPanel.querySelector('.content-wrapper');
+                if (contentWrapper) {
+                    contentWrapper.scrollTop = 0;
+                }
 
                 const accentColor = symbol.color;
                 const listStartDelay = 0.3;
@@ -624,15 +671,14 @@
             detailPanel.classList.remove('detail-enter');
             modalOverlay.style.opacity = '0';
 
-            // 2. Restaurar la visibilidad del contenido principal
-            document.body.style.overflow = ''; // Restaurar el scroll del body
+            // 2. Restaurar la visibilidad del contenido principal y quitar la clase del body
+            document.body.classList.remove('modal-open'); 
 
             setTimeout(() => {
                 detailPanel.style.display = 'none';
                 modalOverlay.style.display = 'none';
                 gridContainer.style.visibility = 'visible';
                 
-                // Ya no necesitamos restaurar la opacidad porque no la atenuamos
             }, 300); // 300ms para que coincida con la transición de opacidad/transform
         }
 
@@ -646,6 +692,7 @@
     </script>
 </body>
 </html>
+
 
 
 
