@@ -1,4 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>El Resolvito | Tu Tienda a Domicilio en La Habana</title>
+    <meta name="description" content="Encuentra víveres y más en El Resolvito. Haz tu pedido online y recíbelo en La Habana. Compra fácil y rápido por WhatsApp.">
+    <meta name="keywords" content="tienda online habana, mercado habana, entrega a domicilio cuba, mandados habana, el resolvito">
+    <meta name="author" content="El Resolvito">
 
+  <!-- ========================================================= -->
+<!-- === BLOQUE DE ÍCONOS Y MANIFEST PROFESIONAL (HÍBRIDO) === -->
+<!-- ========================================================= -->
+
+<!-- 1. Instrucción principal para Android y navegadores modernos -->
+<link rel="manifest" href="/manifest.json?v=4"> <!-- Incrementamos la versión -->
+
+<!-- 2. Color de la barra del navegador -->
+<meta name="theme-color" content="#0d3b33">
+
+<!-- 3. Instrucción de respaldo para Android y principal para iOS -->
+<!--    Chrome la usará si el manifest falla. Safari (iPhone) la usará siempre. -->
+<!--    Apuntamos al ícono más grande que tenemos para asegurar la calidad. -->
+<link rel="apple-touch-icon" href="/android-chrome-512x512.png">
+
+<!-- 4. Favicons estándar para pestañas de navegador, marcadores, etc. -->
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-color: #0d3b33;
+            --accent-color: #c94a37;
+            --background-white: #ffffff;
+            --light-background-gray: #f9fafb;
+            --text-dark: #1f2937;
+            --text-medium: #4b5563;
+            --dark-overlay: rgba(0, 0, 0, 0.6);
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--light-background-gray); }
+
+        /* Ajustes de tamaño de fuente responsive */
+        .text-fixed-sm { font-size: 0.75rem; } @media (min-width: 768px) { .text-fixed-sm { font-size: 0.875rem; } }
+        .text-fixed-base { font-size: 0.875rem; } @media (min-width: 768px) { .text-fixed-base { font-size: 1rem; } }
+        .text-fixed-lg { font-size: 1rem; } @media (min-width: 768px) { .text-fixed-lg { font-size: 1.125rem; } }
+        .text-fixed-xl { font-size: 1.125rem; } @media (min-width: 768px) { .text-fixed-xl { font-size: 1.25rem; } }
+        .text-fixed-2xl { font-size: 1.25rem; } @media (min-width: 768px) { .text-fixed-2xl { font-size: 1.5rem; } }
+        .text-fixed-3xl { font-size: 1.5rem; } @media (min-width: 768px) { .text-fixed-3xl { font-size: 1.875rem; } }
+        .text-fixed-4xl { font-size: 1.875rem; } @media (min-width: 768px) { .text-fixed-4xl { font-size: 2.25rem; } }
+        .text-fixed-6xl { font-size: 2.5rem; } @media (min-width: 768px) { .text-fixed-6xl { font-size: 3.75rem; } }
+        
+        /* Estilos de secciones */
+        .hero-banner { background-image: url('https://i.postimg.cc/rsCKV7LZ/1755367982611.jpg'); background-size: cover; background-position: center; }
+        .hero-overlay { background-color: var(--dark-overlay); }
+        header.scrolled { background-color: rgba(13, 59, 51, 0.95); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        
+        /* Estilos de Modales */
+        .modal-overlay { opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { transform: translateY(-20px); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
+        .modal-overlay.show .modal-content { transform: translateY(0); opacity: 1; }
+        
+        /* Estilos de Menú Móvil */
+        #mobile-menu { transform: translateX(-100%); transition: transform 0.3s ease-in-out; }
+        #mobile-menu.open { transform: translateX(0); }
+        #mobile-backdrop { opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; }
+        #mobile-backdrop.open { opacity: 1; visibility: visible; }
+        
+        /* Estilos de Producto */
+        .unit-type-btn.active { background-color: var(--primary-color); color: white; }
+        
+        /* Animación Shake */
+        .shake { animation: shake-animation 0.6s ease-in-out; }
+        @keyframes shake-animation { 0% { transform: translateX(0); } 15% { transform: translateX(-8px) rotate(-5deg); } 30% { transform: translateX(8px) rotate(5deg); } 45% { transform: translateX(-8px) rotate(-5deg); } 60% { transform: translateX(8px) rotate(5deg); } 75% { transform: translateX(-5px) rotate(-2deg); } 90% { transform: translateX(5px) rotate(2deg); } 100% { transform: translateX(0); } }
+        
+        /* Estilos de Botones de Pago en Efectivo */
+        .cash-btn { border: 1px solid #d1d5db; padding: 8px 12px; border-radius: 8px; font-size: 0.875rem; transition: all 0.2s; }
+        .cash-btn.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+        
+        /* Animaciones Fade-in */
+        .fade-in-up, .fade-in-left, .fade-in-right { opacity: 0; transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-up { transform: translateY(30px); }
+        .fade-in-left { transform: translateX(-30px); }
+        .fade-in-right { transform: translateX(30px); }
+        .is-visible { opacity: 1; transform: none; }
+        
+        /* Estilos de Botones de Categoría */
+        .category-btn { background-color: #f3f4f6; color: var(--text-medium); padding: 8px 16px; border-radius: 9999px; font-weight: 600; transition: all 0.2s; border: 1px solid transparent; }
+        .category-btn:hover { background-color: #e5e7eb; }
+        .category-btn.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+        /* Estilos para la notificación Toast/Banner */
+        #cartToast {
+            position: fixed;
+            bottom: 24px; /* bottom-6 */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--text-dark); /* bg-gray-800 */
+            color: var(--background-white); /* text-white */
+            padding: 12px 20px; /* px-4 py-2 más generoso */
+            border-radius: 8px; /* rounded-lg */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* shadow-lg */
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            pointer-events: none; /* Permite hacer clic a través cuando está oculto */
+            z-index: 9999; /* Asegura que esté por encima de otros elementos */
+            font-size: 0.875rem; /* text-sm */
+            min-width: 200px; /* Ancho mínimo para legibilidad */
+            text-align: center;
+        }
+        #cartToast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Estilo para productos no disponibles */
+        .unavailable-product-card {
+            background-color: #f8f8f8; /* Un gris muy claro */
+            cursor: not-allowed !important;
+            filter: grayscale(80%); /* Hace la imagen en blanco y negro */
+        }
+        .unavailable-product-card .add-to-cart-btn {
+            background-color: #ef4444 !important; /* Rojo suave */
+            color: white !important;
+            cursor: not-allowed !important;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .unavailable-product-card .add-to-cart-btn:hover {
+            background-color: #dc2626 !important; /* Un rojo más fuerte al pasar el mouse */
+            transform: none !important;
+        }
+        .unavailable-product-card .product-name,
+        .unavailable-product-card .product-description {
+            color: var(--text-medium) !important; /* Menos prominente */
+        }
+
+        /* Estilos para el Callout/Banner Flotante */
+        #floatingCallout {
+            position: fixed;
+            bottom: 100px; /* Un poco más arriba que el botón del carrito */
+            right: 24px;
+            max-width: 280px; /* Ancho máximo para no ser muy grande */
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 9990; /* Debajo del carrito flotante */
+            opacity: 0;
+            transform: translateX(100%); /* Empieza fuera de pantalla a la derecha */
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            display: none; /* Se oculta completamente por defecto */
+        }
+        #floatingCallout.show {
+            opacity: 1;
+            transform: translateX(0); /* Se desliza a la vista */
+            display: block;
+        }
+        #floatingCallout .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+        /* Media query para móviles, para que no colisione con el botón del carrito */
+        @media (max-width: 640px) {
+            #floatingCallout {
+                bottom: 120px; /* Ajustar posición en móviles si el botón del carrito es más grande */
+                right: 16px;
+                max-width: 90%; /* Ajuste para pantalla pequeña */
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+<header id="mainHeader" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-2">
+        <div class="flex items-center gap-4">
+            <button id="mobile-menu-button" class="md:hidden text-white"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            <a href="#" class="flex items-center gap-3 flex-shrink-0">
+                <img src="https://i.postimg.cc/s2FHrX2Y/logo_el_resolvito.jpg" alt="Logo El Resolvito" class="h-12 w-12 md:h-16 md:w-16 rounded-full shadow-md object-cover">
+                <span class="text-white text-fixed-lg md:text-xl font-bold hidden sm:block">El Resolvito</span>
+            </a>
+        </div>
+        <nav class="hidden md:flex items-center gap-4 md:gap-6 text-white font-semibold">
+            <a href="#mercado" class="text-fixed-lg hover:text-gray-300 transition-colors duration-300">Mercado</a>
+            <a href="#como-comprar" class="text-fixed-lg hover:text-gray-300 transition-colors duration-300">¿Cómo Comprar?</a>
+            <a href="#nuestras-ventajas" class="text-fixed-lg hover:text-gray-300 transition-colors duration-300">Nuestras Ventajas</a>
+            <!-- <a href="#testimonios" class="text-fixed-lg hover:text-gray-300 transition-colors duration-300">Testimonios</a> -->
+            <a href="#contacto" class="text-fixed-lg hover:text-gray-300 transition-colors duration-300">Contacto</a>
+        </nav>
+    </div>
+</header>
+
+<div id="mobile-menu" class="fixed top-0 left-0 h-full w-64 bg-[var(--primary-color)] z-50 shadow-xl md:hidden">
+    <div class="p-6">
+        <div class="flex justify-between items-center mb-8">
+            <a href="#" class="flex items-center gap-2">
+                <img src="https://i.postimg.cc/s2FHrX2Y/logo_el_resolvito.jpg" alt="El Resolvito Logo" class="h-12 w-12 rounded-full object-cover">
+                <span class="text-white text-fixed-lg font-bold">El Resolvito</span>
+            </a>
+            <button id="close-mobile-menu" class="text-white"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
+        </div>
+        <nav class="flex flex-col space-y-4 text-fixed-lg font-semibold text-white">
+            <a href="#mercado" class="hover:text-gray-300 transition-colors mobile-nav-link">Mercado</a>
+            <a href="#como-comprar" class="hover:text-gray-300 transition-colors mobile-nav-link">¿Cómo Comprar?</a>
+            <a href="#nuestras-ventajas" class="hover:text-gray-300 transition-colors mobile-nav-link">Nuestras Ventajas</a>
+            <!-- <a href="#testimonios" class="hover:text-gray-300 transition-colors mobile-nav-link">Testimonios</a> -->
+            <a href="#contacto" class="hover:text-gray-300 transition-colors mobile-nav-link">Contacto</a>
+        </nav>
+    </div>
+</div>
+<div id="mobile-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"></div>
+
+<main>
+    <section class="hero-banner relative pt-24 pb-16 md:pt-32 md:pb-24">
+        <div class="hero-overlay absolute inset-0 opacity-75"></div>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center text-white">
+            <h1 class="text-fixed-4xl md:text-fixed-6xl font-extrabold mb-4 drop-shadow-lg fade-in-up">EL RESOLVITO</h1>
+            <p class="text-fixed-lg md:text-fixed-xl max-w-2xl mx-auto mb-8 drop-shadow-md fade-in-up" style="transition-delay: 150ms;">Mercado y víveres... a un clic de distancia. **Tu solución en La Habana Vieja para comprar sin complicaciones.**</p>
+            <a href="#mercado" class="bg-[var(--accent-color)] text-white font-bold py-3 px-8 rounded-full text-fixed-lg hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 shadow-lg fade-in-up" style="transition-delay: 300ms;">Explorar Productos</a>
+        </div>
+    </section>
+
+    <section id="nuestras-ventajas" class="py-16 lg:py-24 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <h2 class="text-fixed-3xl md:text-fixed-4xl font-bold text-[var(--text-dark)]">¿Por Qué Elegir El Resolvito?</h2>
+                <p class="mt-4 text-fixed-lg text-[var(--text-medium)] max-w-3xl mx-auto">Enfocados en tu comodidad, ahorro y tranquilidad, especialmente en el corazón de La Habana Vieja.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md text-center flex flex-col items-center fade-in-up">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[var(--primary-color)] mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <h3 class="text-fixed-xl font-bold text-[var(--text-dark)] mb-2">Ahorra Tiempo</h3>
+                    <p class="text-fixed-base text-[var(--text-medium)]">Dedica tu tiempo a lo que realmente importa, nosotros nos ocupamos del resto.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md text-center flex flex-col items-center fade-in-up" style="transition-delay: 100ms;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[var(--primary-color)] mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <h3 class="text-fixed-xl font-bold text-[var(--text-dark)] mb-2">Compra Cómoda</h3>
+                    <p class="text-fixed-base text-[var(--text-medium)]">Selecciona tus productos desde casa. Tu pedido llega directo a tu apto.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md text-center flex flex-col items-center fade-in-up" style="transition-delay: 200ms;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[var(--primary-color)] mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7m0-4v8a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h10a2 2 0 012 2v4a2 2 0 002 2h2m-6 4h4" /></svg>
+                    <h3 class="text-fixed-xl font-bold text-[var(--text-dark)] mb-2">Experiencia Confortable</h3>
+                    <p class="text-fixed-base text-[var(--text-medium)]">Disfruta de un proceso de compra sin estrés, desde el catálogo hasta la entrega. Tu tranquilidad es nuestra prioridad.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md text-center flex flex-col items-center fade-in-up" style="transition-delay: 300ms;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[var(--primary-color)] mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.007 12.007 0 002 12c0 2.755 1.056 5.409 2.944 7.318A11.955 11.955 0 0112 21.056c2.755 0 5.409-1.056 7.318-2.944A12.007 12.007 0 0022 12c0-2.755-1.056-5.409-2.944-7.318z" /></svg>
+                    <h3 class="text-fixed-xl font-bold text-[var(--text-dark)] mb-2">Seguridad</h3>
+                    <p class="text-fixed-base text-[var(--text-medium)]">Tu pedido es confirmado personalmente por WhatsApp. Entrega confiable y métodos de pago flexibles para tu total tranquilidad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mercado" class="py-16 lg:py-24 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <h2 class="text-fixed-3xl md:text-fixed-4xl font-bold text-[var(--text-dark)]">Mercado y Víveres</h2>
+                <p class="mt-4 text-fixed-lg text-[var(--text-medium)] max-w-3xl mx-auto">Encuentra productos que necesitas para tu hogar, desde bebidas refrescantes hasta productos frescos.</p>
+            </div>
+            
+            <div class="bg-white border-2 border-dashed border-green-200 p-4 rounded-xl shadow-md mb-8 text-center fade-in-up" id="deliveryPromoBanner">
+                <h3 class="text-fixed-xl md:text-fixed-2xl font-extrabold text-[var(--primary-color)] mb-4">¡Ahorra y Simplifica tu Envío en La Habana Vieja!</h3>
+                
+                <div class="w-full bg-gray-200 rounded-full h-3 mb-4 relative">
+                    <div id="promoProgressBar" class="bg-[var(--accent-color)] h-3 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    <div id="progressText" class="absolute top-0 left-0 w-full h-full flex items-center justify-center px-2 text-xs font-bold text-[var(--primary-color)]">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-fixed-sm md:text-fixed-base max-w-xl mx-auto">
+                    <div id="promoLevelTramo1" class="bg-gray-50 p-3 rounded-lg flex flex-col justify-center items-center opacity-75 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a4 4 0 00-4-4H5a4 4 0 00-4 4v6a4 4 0 004 4h2m2 4h10a4 4 0 004-4v-6a4 4 0 00-4-4H9a4 4 0 00-4 4v6a4 4 0 004 4zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        <p class="font-semibold text-gray-800">Pedidos de $500 a $3,000</p>
+                        <p class="text-gray-600 font-bold">$150 CUP de envío fijo</p>
+                        <p class="text-xs text-gray-500">(Tarifa fija por valor)</p>
+                    </div>
+                    <div id="promoLevelTramo2" class="bg-green-50 p-3 rounded-lg flex flex-col justify-center items-center ring-2 ring-transparent transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-700 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14l6-6m-5.5.5h.01m4.99 4.99h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+                        <p class="font-semibold text-gray-800">Compras Superiores a $3,000</p>
+                        <p class="text-green-700 font-bold">Base + Peso o Mínimo por Valor</p>
+                        <p class="text-xs text-gray-500">(Mínimo $250 CUP para alto valor)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-lg mb-8 fade-in-up" style="transition-delay: 150ms;">
+                <input type="text" id="mercadoSearchInput" placeholder="Buscar en Mercado y Víveres..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent transition text-fixed-base">
+            </div>
+            <div id="mercadoCategoryFilters" class="flex flex-wrap justify-center gap-2 mb-8 fade-in-up" style="transition-delay: 300ms;"></div>
+            <div id="mercadoProductGrid"></div>
+            <p id="mercadoNoResultsMessage" class="hidden text-center text-fixed-lg text-[var(--text-medium)] mt-8">No se encontraron productos que coincidan con tu búsqueda.</p>
+        </div>
+    </section>
+    
+    <!-- === INICIO DEL BLOQUE DE PROMOCIÓN CON IMAGEN === -->
+    <section id="promo-entrega" class="py-16 lg:py-24 bg-blue-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-8">
+            <div class="lg:w-1/2 flex justify-center fade-in-left">
+                <!-- La imagen del mensajero -->
+                <img src="https://i.postimg.cc/rsCKV7LZ/1755367982611.jpg" alt="Mensajero de El Resolvito entregando pedido" class="rounded-xl shadow-2xl object-cover max-h-[500px] w-full lg:w-auto">
+            </div>
+            <div class="lg:w-1/2 text-center lg:text-left fade-in-right">
+                <h2 class="text-fixed-3xl md:text-fixed-4xl font-bold text-[var(--primary-color)] mb-4">
+                    ¡Tu Mercado en La Habana Vieja, Así de Fácil!
+                </h2>
+                <p class="text-fixed-lg text-[var(--text-dark)] mb-6 max-w-xl mx-auto lg:mx-0">
+                    ¿Cansado de las colas, el sol y cargar con el peso? En El Resolvito, **te llevamos tu compra directo a casa y con una sonrisa.** ¡Tu tiempo vale oro!
+                </p>
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 mb-8">
+                    <h3 class="text-fixed-xl font-bold text-[var(--accent-color)] mb-3">Nuestra Nueva Política de Envíos en Habana Vieja:</h3>
+                    <ul class="list-disc list-inside text-fixed-base text-[var(--text-medium)] text-left mx-auto max-w-sm lg:max-w-none space-y-2">
+                        <li>Pedido Mínimo: <strong class="text-[var(--primary-color)]">$500 CUP</strong>. ¡Haz que cada entrega cuente!</li>
+                        <li><strong class="text-[var(--primary-color)]">Tramo 1 ($500 - $3,000):</strong> Tarifa fija de <strong class="text-[var(--accent-color)]">$150 CUP</strong>.</li>
+                        <li><strong class="text-green-700 font-extrabold">Tramo 2 (Compras > $3,000):</strong> El costo de envío será el **MÁXIMO** entre:
+                            <ul class="list-circle list-inside ml-4 mt-1">
+                                <li>$100 CUP Base + $100 CUP por cada 10 kg o fracción.</li>
+                                <li>Mínimo por Valor ($250 o $350 CUP, dependiendo del subtotal).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="#mercado" class="inline-block bg-[var(--primary-color)] text-white font-bold py-3 px-8 rounded-full text-fixed-lg hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    ¡Empieza a Resolver Aquí!
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- === FIN DEL BLOQUE DE PROMOCIÓN CON IMAGEN === -->
+
+    <section id="como-comprar" class="py-16 lg:py-24 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <h2 class="text-fixed-3xl md:text-fixed-4xl font-bold text-[var(--text-dark)]">¿Cómo Comprar en Línea?</h2>
+                <p class="mt-4 text-fixed-lg text-[var(--text-medium)] max-w-3xl mx-auto">Hacer tu pedido es muy fácil. Sigue estos sencillos pasos para recibir tus productos sin complicaciones.</p>
+            </div>
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+                <div class="fade-in-left"><div class="text-fixed-4xl mb-4 text-[var(--primary-color)]">1.</div><h3 class="text-fixed-xl font-bold mb-2">Elige Productos</h3><p class="text-fixed-base text-[var(--text-medium)]">Navega por nuestro catálogo, siempre actualizado, y encuentra lo que necesitas **sin perder tiempo buscando por la ciudad**.</p></div>
+                <div class="flex items-center justify-center text-gray-300 text-fixed-4xl font-light hidden md:flex">→</div>
+                <div class="fade-in-right" style="transition-delay: 150ms;"><div class="text-fixed-4xl mb-4 text-[var(--primary-color)]">2.</div><h3 class="text-fixed-xl font-bold mb-2">Revisa tu Carrito</h3><p class="text-fixed-base text-[var(--text-medium)]">Abre tu carrito, revisa tu selección y las cantidades. Cuando estés listo, pulsa "Enviar Pedido" para **agilizar tu compra**.</p></div>
+                <div class="flex items-center justify-center text-gray-300 text-fixed-4xl font-light hidden md:flex">→</div>
+                <div class="fade-in-left" style="transition-delay: 300ms;"><div class="text-fixed-4xl mb-4 text-[var(--primary-color)]">3.</div><h3 class="text-fixed-xl font-bold mb-2">Completa tus Datos</h3><p class="text-fixed-base text-[var(--text-medium)]">Llena el formulario con tu información, dirección y método de pago. **Guardamos tus datos para futuras compras** y mayor rapidez.</p></div>
+                <div class="flex items-center justify-center text-gray-300 text-fixed-4xl font-light hidden md:flex">→</div>
+                <div class="fade-in-right" style="transition-delay: 450ms;"><div class="text-fixed-4xl mb-4 text-[var(--primary-color)]">4.</div><h3 class="text-fixed-xl font-bold mb-2">Confirma y Recibe</h3><p class="text-fixed-base text-[var(--text-medium)]">Confirma tu pedido y te contactaremos por WhatsApp para **coordinar la entrega directamente en tu hogar, sin cargar ni subir escaleras**.</p></div>
+            </div>
+            <div class="mt-12 max-w-4xl mx-auto p-6 rounded-xl fade-in-up">
+                <h3 class="text-fixed-xl font-bold text-[var(--text-dark)] mb-6 text-center">Nuestra Política de Envíos</h3>
+                
+                <div class="bg-blue-50 p-4 rounded-lg shadow-inner mb-6">
+                    <h4 class="font-bold text-fixed-lg text-[var(--primary-color)] mb-3 text-center">Envíos en Habana Vieja</h4>
+                    <p class="text-center font-bold text-gray-700 mb-4 text-fixed-base">Pedido mínimo: $500 CUP</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
+                        <div class="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col justify-between">
+                            <p class="text-base font-semibold text-gray-700">Tramo 1: $500 - $3,000</p>
+                            <p class="text-xl font-bold text-[var(--accent-color)] mt-1">Tarifa Fija $150 CUP</p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-md border border-green-300 shadow-md flex flex-col justify-between transform scale-[1.03] relative">
+                            <p class="text-base font-semibold text-green-800">Tramo 2: Compras > $3,000</p>
+                            <p class="text-xl font-bold text-green-700 mt-1">Máximo entre Peso y Valor</p>
+                            <p class="text-xs text-gray-600 mt-1">(Desde $250 CUP para alto valor)</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4 text-center">Nota: El costo de envío en el Tramo 2 se calcula como el mayor de: (A) Base de $100 CUP + Recargo por 10 kg o fracción, O (B) Mínimo de Envío por Valor ($250 o $350 CUP, dependiendo del subtotal). Se notificará por WhatsApp antes de procesar.</p>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-lg shadow-inner mb-6">
+                    <h4 class="font-bold text-fixed-lg text-[var(--primary-color)] mb-3 text-center">Otros Municipios</h4>
+                    <p class="text-fixed-base text-[var(--text-medium)] text-center">El costo de envío se ajustará al precio de la agencia de mensajería externa, el cual puede variar según la distancia, el peso y el volumen de tu pedido.</p>
+                    <p class="text-fixed-base text-[var(--text-medium)] text-center">Te lo confirmaremos por WhatsApp antes de procesar tu pedido.</p>
+                </div>
+                
+                <div class="text-center mt-6 border-t pt-4">
+                    <p class="font-bold text-gray-800 text-fixed-lg mb-2">Horarios de Reparto:</p>
+                    <p class="text-fixed-base text-[var(--text-medium)]">Pedidos recibidos antes de las 11:00 AM se entregan de 12 PM a 2 PM.</p>
+                    <p class="text-fixed-base text-[var(--text-medium)]">Pedidos recibidos antes de las 4:00 PM se entregan de 5 PM a 7 PM.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Testimonios (Comentada temporalmente) -->
+
+    <section id="contacto" class="py-16 lg:py-24">
+         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in-up">
+                <h2 class="text-fixed-3xl md:text-fixed-4xl font-bold text-[var(--text-dark)]">Únete a Nuestro Club de Ofertas</h2>
+                <p class="mt-4 text-fixed-lg text-[var(--text-medium)] max-w-3xl mx-auto">Sé el primero en enterarte de nuevos productos y promociones exclusivas uniéndote a nuestro grupo de WhatsApp.</p>
+            </div>
+            <div class="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-lg text-center fade-in-up" style="transition-delay: 150ms;">
+                <div class="space-y-4">
+                    <p class="text-fixed-lg"><strong>Canal de anuncios:</strong> Solo administradores</p>
+                    <p class="text-fixed-lg"><strong>Cero spam,</strong> solo información útil.</p>
+                </div>
+                <a href="#" id="contactWhatsappBtn" class="mt-8 inline-block bg-green-500 text-white font-bold py-3 px-8 rounded-full text-fixed-lg hover:bg-green-600 transform hover:scale-105 transition-all duration-300 shadow-lg">Unirse al Grupo de WhatsApp</a>
+            </div>
+         </div>
+    </section>
+</main>
+
+<footer class="bg-[var(--text-dark)] text-white py-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+        <div class="flex justify-center items-center gap-6 mb-6">
+            <a href="https://wa.me/5356382909?text=¡Hola!%20Me%20interesa%20hacer%20un%20pedido." target="_blank" class="text-gray-400 hover:text-white transition-transform hover:scale-110"><svg class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C7.38 2 3.51 5.87 3.51 10.53C3.51 12.02 3.9 13.43 4.6 14.65L3.32 20.02L8.76 18.73C9.9 19.37 11.19 19.72 12.51 19.72H12.53C17.19 19.72 21.06 15.85 21.06 11.19C21.06 6.53 17.19 2.66 12.53 2.66H12.51Z"/></svg></a>
+        </div>
+        <p class="text-fixed-sm">&copy; 2024 El Resolvito. Todos los derechos reservados.</p>
+    </div>
+</footer>
+    
+<!-- Modals (Carrito, Detalles de Producto, Checkout) -->
+<div id="cartModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="modal-content bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col">
+        <div class="p-6 border-b"><div class="flex justify-between items-center"><h3 class="text-fixed-xl font-bold text-[var(--text-dark)]">Tu Carrito</h3><button id="closeCartModal" class="text-gray-500 hover:text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button></div></div>
+        <div id="cartItems" class="p-6 overflow-y-auto"><p class="text-center text-[var(--text-medium)] text-fixed-base">Tu carrito está vacío</p></div>
+        <div class="p-6 border-t"><div class="flex justify-between items-center mb-4"><span class="text-fixed-lg font-bold">Total:</span><span id="cartTotal" class="text-fixed-lg font-bold text-[var(--primary-color)]">$0</span></div><button id="sendWhatsAppOrder" class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-fixed-base hover:bg-green-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Enviar Pedido por WhatsApp</button></div>
+    </div>
+</div>
+<div id="productDetailsModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[1000]">
+    <div class="modal-content bg-white rounded-lg shadow-xl w-11/12 max-w-md max-h-[90vh] flex flex-col">
+        <div class="flex justify-between items-center p-4 border-b"><h2 id="productDetailsTitle" class="text-fixed-2xl font-bold"></h2><button id="closeProductDetailsModalBtn" class="text-gray-500 hover:text-gray-800 text-fixed-3xl">&times;</button></div>
+        <div class="p-6 overflow-y-auto">
+            <img id="productDetailsImage" src="" alt="Imagen del Producto" class="w-full h-64 object-contain rounded-lg mb-4">
+            <p id="productDetailsDescription" class="text-fixed-base text-[var(--text-medium)] mb-4"></p>
+            <div id="unitTypeSection" class="mb-4 hidden">
+                <label class="block text-fixed-base font-semibold text-gray-700 mb-2">Tipo de compra:</label>
+                <div class="flex gap-2">
+                    <button id="unitTypeIndividual" class="unit-type-btn flex-1 py-2 px-4 border border-gray-300 rounded-lg text-fixed-sm font-medium transition-colors active">Individual</button>
+                    <button id="unitTypeBox" class="unit-type-btn flex-1 py-2 px-4 border border-gray-300 rounded-lg text-fixed-sm font-medium transition-colors">Por Caja (24 unidades)</button>
+                </div>
+            </div>
+            <p id="productDetailsPrice" class="text-fixed-3xl font-bold text-[var(--primary-color)] mb-6 text-center"></p>
+            <div class="flex items-center justify-center space-x-4 mb-4">
+                <button id="decreaseQuantityBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold w-10 h-10 rounded-full text-fixed-xl">-</button>
+                <span id="productQuantityDisplay" class="text-fixed-2xl font-bold w-12 text-center">1</span>
+                <button id="increaseQuantityBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold w-10 h-10 rounded-full text-fixed-xl">+</button>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg mb-4"><div class="flex justify-between items-center"><span class="text-fixed-lg font-semibold">Total:</span><span id="modalTotalPrice" class="text-fixed-2xl font-bold text-[var(--accent-color)]">$0</span></div></div>
+            <button id="addProductToCartModalBtn" class="w-full bg-[var(--accent-color)] text-white font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-all duration-300 text-fixed-lg">Añadir al Carrito</button>
+        </div>
+    </div>
+</div>
+
+<div id="checkoutModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+    <div class="modal-content bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+        <div class="p-6 border-b"><div class="flex justify-between items-center"><h3 class="text-fixed-2xl font-bold text-[var(--text-dark)]">Finalizar Pedido</h3><button id="closeCheckoutModal" class="text-gray-500 hover:text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button></div></div>
+        <div class="flex-1 overflow-y-auto">
+            <div class="p-6 border-b">
+                <h4 class="text-fixed-lg font-bold text-[var(--text-dark)] mb-4">1. Resumen de tu Pedido</h4>
+                <div id="checkoutOrderSummary" class="space-y-3 mb-4"></div>
+                <div id="upsellMessage" class="my-4 p-3 rounded-lg text-center font-semibold text-sm transition-all duration-300"></div>
+                <div class="bg-gray-50 p-4 rounded-lg space-y-2"><div class="flex justify-between text-fixed-base"><span>Subtotal de productos:</span><span id="checkoutSubtotal" class="font-semibold">$0</span></div><div class="flex justify-between text-fixed-base text-gray-600"><span>Servicio y Empaque:</span><span id="checkoutServiceFee" class="font-semibold">$50</span></div><div class="flex justify-between text-fixed-base"><span>Costo de envío:</span><span id="checkoutShipping" class="font-semibold">$0</span></div><div id="shippingNote" class="text-fixed-sm text-gray-600 hidden"></div><hr class="my-2"><div class="flex justify-between text-fixed-lg font-bold text-[var(--primary-color)]"><span>Total a Pagar:</span><span id="checkoutTotal">$0</span></div></div>
+            </div>
+            <div class="p-6 border-b">
+                <h4 class="text-fixed-lg font-bold text-[var(--text-dark)] mb-4">2. Datos de Contacto</h4>
+                <div class="space-y-4">
+                    <div>
+                        <label for="customerName" class="block text-fixed-base font-semibold text-gray-700 mb-2">Nombre completo *</label>
+                        <input type="text" id="customerName" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm p-2 text-fixed-base focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)]" required>
+                    </div>
+                    <div>
+                        <label for="customerAddress" class="block text-fixed-base font-semibold text-gray-700 mb-2">Calle y número (ej: Aguiar #230 apto 1) *</label>
+                        <input type="text" id="customerAddress" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm p-2 text-fixed-base focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)]" required>
+                    </div>
+                    <div>
+                        <label for="customerReferences" class="block text-fixed-base font-semibold text-gray-700 mb-2">Puntos de Referencia (Opcional)</label>
+                        <input type="text" id="customerReferences" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm p-2 text-fixed-base focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)]">
+                    </div>
+                    <div>
+                        <label for="customerPhone" class="block text-fixed-base font-semibold text-gray-700 mb-2">Número de teléfono *</label>
+                        <input type="tel" id="customerPhone" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm p-2 text-fixed-base focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)]" required>
+                    </div>
+                    <div>
+                        <label for="deliveryLocation" class="block text-fixed-base font-semibold text-gray-700 mb-2">Ubicación *</label>
+                        <select id="deliveryLocation" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm p-2 text-fixed-base focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)]" required>
+                            <option value="">Selecciona tu ubicación</option>
+                            <option value="habana-vieja">Habana Vieja</option>
+                            <option value="otros">Otros municipios</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6">
+                <h4 class="text-fixed-lg font-bold text-[var(--text-dark)] mb-4">3. Detalles del Pago</h4>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-fixed-base font-semibold text-gray-700 mb-2">Método de pago *</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="paymentMethod" value="efectivo" class="mr-3 text-[var(--primary-color)] focus:ring-[var(--primary-color)]">
+                                <span class="text-fixed-base">Efectivo</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="paymentMethod" value="transferencia" class="mr-3 text-[var(--primary-color)] focus:ring-[var(--primary-color)]">
+                                <span class="text-fixed-base">Transferencia</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="cashPaymentField" class="hidden">
+                        <label class="block text-fixed-base font-semibold text-gray-700 mb-2">Pagaré con...</label>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" class="cash-btn" data-amount="20">$20</button>
+                            <button type="button" class="cash-btn" data-amount="50">$50</button>
+                            <button type="button" class="cash-btn" data-amount="100">$100</button>
+                            <button type="button" class="cash-btn" data-amount="200">$200</button>
+                            <button type="button" class="cash-btn" data-amount="500">$500</button>
+                            <button type="button" class="cash-btn" data-amount="1000">$1000</button>
+                            <button type="button" class="cash-btn" data-amount="otro">Otro</button>
+                        </div>
+                        <input type="text" id="otherCashAmount" placeholder="Especifica otro monto" class="hidden w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] transition text-fixed-base">
+                    </div>
+                </div>
+            </div>
+            <div class="p-6">
+                <h4 class="text-fixed-lg font-bold text-[var(--text-dark)] mb-4">4. Política de Envíos</h4>
+                <div class="bg-blue-50 p-4 rounded-lg text-fixed-sm text-gray-700 space-y-2">
+                    <p><strong>Horarios de entrega:</strong> 9:00 a.m. a 8:00 p.m.</p>
+                    <p><strong>Habana Vieja:</strong></p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li><strong>Pedido mínimo de $500 CUP.</strong></li>
+                        <li><strong>Tramo 1 ($500 - $3,000):</strong> Tarifa fija de <strong>$150 CUP</strong>.</li>
+                        <li><strong>Tramo 2 (Compras > $3,000):</strong> Se aplica la tarifa **MÁXIMA** entre:
+                            <ul class="list-circle list-inside ml-4 mt-1">
+                                <li>**Cálculo por Peso:** Base de $100 CUP + Recargo de $100 CUP por cada 10 kg o fracción.</li>
+                                <li>**Mínimo por Valor:** $250 CUP (para $3,001-$5,000) o $350 CUP (para más de $5,000).</li>
+                            </ul>
+                        </li>
+                        <li class="text-xs text-gray-500 mt-1">Nota: Este cálculo asegura que las entregas de alto valor y bajo peso (Ej. Ropa) cubran los costos logísticos y el riesgo financiero.</li>
+                    </ul>
+                    <p><strong>Otros municipios:</strong></p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>El costo de envío se ajustará al precio de la agencia de mensajería externa, el cual puede variar según la distancia, el peso y el volumen de tu pedido.</li>
+                        <li>Se lo confirmaremos por WhatsApp antes de procesar su pedido.</li>
+                    </ul>
+                    <p class="text-xs text-gray-600 mt-3">Al confirmar su pedido, acepta nuestras condiciones de envío y horarios establecidos.</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-6 border-t bg-gray-50">
+            <button id="confirmOrderBtn" class="w-full bg-green-500 text-white font-bold py-4 px-4 rounded-lg text-fixed-base hover:bg-green-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]">Confirmar y Enviar Pedido</button>
+        </div>
+    </div>
+</div>
+
+<div id="confirmationModal" class="modal-overlay fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4">
+    <div class="modal-content bg-white rounded-lg shadow-xl w-11/12 max-w-md p-6 text-center">
+        <h3 class="text-fixed-2xl font-bold text-[var(--text-dark)] mb-4">¡Pedido Confirmado!</h3>
+        <p class="text-fixed-base text-[var(--text-medium)] mb-6">Tu pedido ha sido enviado. Te contactaremos pronto por WhatsApp para coordinar la entrega.</p>
+        <button id="closeConfirmationModal" class="bg-[var(--primary-color)] text-white font-bold py-2 px-6 rounded-lg hover:bg-opacity-90 transition-colors duration-300 text-fixed-base">Cerrar</button>
+    </div>
+</div>
+
+<button id="floatingCartBtn" class="fixed bottom-6 right-6 bg-[var(--primary-color)] text-white px-5 py-3 rounded-full shadow-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 z-40 flex items-center gap-3">
+    <div class="relative">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.402H3.62a.5.5 0 0 1-.49-.598l-1-5A.5.5 0 0 1 2 1H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2.5h7.45l.5-2.5H3.14zM5 12a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+        </svg>
+        <span id="cartCount" class="absolute -top-1 -right-1 bg-[var(--accent-color)] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">0</span>
+    </div>
+    <span id="floatingCartTotal" class="text-fixed-lg font-bold">$0</span>
+</button>
+
+<div id="cartToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-[9999]">
+    <p id="cartToastMessage" class="text-fixed-sm"></p>
+</div>
+
+<div id="floatingCallout" class="fixed bottom-24 right-6 bg-[var(--primary-color)] text-white p-4 rounded-lg shadow-xl text-fixed-base z-[9990] opacity-0 translate-x-full transition-all duration-500 ease-out">
+    <button class="close-btn" id="closeFloatingCallout">&times;</button>
+    <p class="font-bold mb-2">¡Comodidad en La Habana Vieja!</p>
+    <p>Olvida las colas y el esfuerzo. Recibe tus compras directo en tu apartamento.</p>
+    <a href="#nuestras-ventajas" class="mt-3 inline-block bg-[var(--accent-color)] text-white text-fixed-sm font-semibold py-2 px-4 rounded-full hover:bg-opacity-90 transition-colors">Ver Ventajas</a>
+</div>
+
+<!-- Referencias a los scripts externos -->
+<script src="products.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
 
 
 
